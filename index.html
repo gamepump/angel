@@ -183,7 +183,7 @@
             "Did you know that Alex is Haywan?",
             "Thank you for carrying our baby so beautifully."
         ];
-        
+
         function newAffirmation() {
             const randomAffirmation = affirmations[Math.floor(Math.random() * affirmations.length)];
             document.getElementById('affirmation-text').textContent = `"${randomAffirmation}"`;
@@ -205,8 +205,7 @@
             ];
             const randomMsg = messages[Math.floor(Math.random() * messages.length)];
             document.getElementById('random-message').textContent = randomMsg;
-            
-            // Load confetti if available
+
             if (typeof confetti === 'function') {
                 confetti({ particleCount: 100, spread: 70 });
             }
@@ -216,7 +215,7 @@
         function saveNote() {
             const note = document.getElementById('note-input').value.trim();
             if (!note) return;
-            
+
             let notes = JSON.parse(localStorage.getItem('loveNotes') || '[]');
             notes.push({
                 text: note,
@@ -238,7 +237,43 @@
 
         // Baby Names
         function addBabyName() {
-            const name = document.getElementById('name-input').value.trim();
+            const nameInput = document.getElementById('name-input');
+            const name = nameInput.value.trim();
             if (!name) return;
-            
-            let names = JSON.parse(local
+
+            let names = JSON.parse(localStorage.getItem('babyNames') || '[]');
+            names.push(name);
+            localStorage.setItem('babyNames', JSON.stringify(names));
+            nameInput.value = '';
+            displayBabyNames();
+        }
+
+        function displayBabyNames() {
+            const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
+            const list = document.getElementById('baby-names-list');
+            list.innerHTML = '';
+            names.forEach((name, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    ${name}
+                    <button onclick="removeBabyName(${index})" style="background:#ff8fab; color:#fff; border:none; padding:5px 10px; border-radius:15px; cursor:pointer;">Remove</button>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        function removeBabyName(index) {
+            let names = JSON.parse(localStorage.getItem('babyNames') || '[]');
+            names.splice(index, 1);
+            localStorage.setItem('babyNames', JSON.stringify(names));
+            displayBabyNames();
+        }
+
+        // Load saved notes and names on page load
+        window.onload = function () {
+            displayNotes();
+            displayBabyNames();
+        };
+    </script>
+</body>
+</html>
