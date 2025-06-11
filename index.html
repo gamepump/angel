@@ -16,12 +16,10 @@
       max-width: 800px;
       margin: auto;
     }
-
     h1, h2 {
       text-align: center;
       color: #c9184a;
     }
-
     section {
       background: #fff;
       padding: 20px;
@@ -29,14 +27,12 @@
       border-radius: 15px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-
     .button-container {
       display: flex;
       justify-content: center;
       gap: 10px;
       flex-wrap: wrap;
     }
-
     button {
       padding: 10px 20px;
       border: none;
@@ -47,12 +43,10 @@
       cursor: pointer;
       transition: 0.3s;
     }
-
     button:hover {
       opacity: 0.9;
       transform: scale(1.05);
     }
-
     textarea, input {
       width: 100%;
       padding: 10px;
@@ -60,20 +54,17 @@
       border: 1px solid #ddd;
       border-radius: 5px;
     }
-
-    #output, #note-list {
+    #output, #note-list, #baby-names-list, #mood-response, #pregnancy-facts {
       background: #ffe5ec;
       margin-top: 15px;
       padding: 15px;
       border-radius: 10px;
       color: #c9184a;
     }
-
     ul {
       list-style: none;
       padding: 0;
     }
-
     ul li {
       padding: 10px;
       background: #ffd6e0;
@@ -83,7 +74,6 @@
       justify-content: space-between;
       align-items: center;
     }
-
     ul li button {
       background: #c9184a;
       font-size: 12px;
@@ -94,27 +84,94 @@
 <body>
   <h1>💌 For My Angelina 💌</h1>
 
-  <!-- Surprise Message -->
+  <!-- Mood Tracker -->
   <section>
-    <h2>💕 A Message From Hussam</h2>
+    <h2>🧘‍♀️ How Are You Feeling Today?</h2>
     <div class="button-container">
-      <button onclick="showMessage()">Show Me Love</button>
+      <button onclick="logMood('happy')">😊 Happy</button>
+      <button onclick="logMood('relaxed')">🌿 Relaxed</button>
+      <button onclick="logMood('tired')">😩 Tired</button>
+      <button onclick="logMood('sleepy')">😴 Sleepy</button>
     </div>
-    <div id="output"></div>
+    <div id="mood-response"></div>
   </section>
 
-  <!-- Journal Notes -->
+  <!-- Pregnancy Timeline -->
   <section>
-    <h2>📝 Our Journal</h2>
-    <textarea id="note-input" placeholder="Write a special note..." rows="4"></textarea>
+    <h2>🤰 Baby Update - 12 Weeks & 1 Day</h2>
+    <div id="pregnancy-facts">
+      <p>👶 Your baby is the size of a peach!</p>
+      <ul>
+        <li>🧠 Unique fingerprints are forming.</li>
+        <li>👂 Baby can hear your voice.</li>
+        <li>🦴 Bones are getting stronger.</li>
+        <li>💓 The heart beats at 160 bpm.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Baby Name Ideas -->
+  <section>
+    <h2>👶 Baby Name Ideas</h2>
+    <input type="text" id="name-input" placeholder="Add a name you love...">
+    <div class="button-container">
+      <button onclick="addBabyName()">Add Name</button>
+    </div>
+    <div id="baby-names-list"></div>
+  </section>
+
+  <!-- Love Notes -->
+  <section>
+    <h2>💖 Love Notes</h2>
+    <textarea id="note-input" placeholder="Write something sweet..." rows="4"></textarea>
     <div class="button-container">
       <button onclick="saveNote()">Save Note</button>
     </div>
     <div id="note-list"></div>
   </section>
 
+  <!-- Surprise Message -->
+  <section>
+    <h2>🎁 Surprise from Hussam</h2>
+    <div class="button-container">
+      <button onclick="showMessage()">Show Me Love</button>
+    </div>
+    <div id="output"></div>
+  </section>
+
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
+    // Mood Tracker
+    const moodMessages = {
+      happy: [
+        "That smile lights up everything! 🌞",
+        "Seeing you happy makes my heart melt 💓",
+        "You're glowing today, angel!"
+      ],
+      relaxed: [
+        "Breathe in peace, breathe out stress 🧘",
+        "You deserve every calm moment.",
+        "Let the world slow down around you 🌸"
+      ],
+      tired: [
+        "You’re growing a tiny human — rest, my love 💤",
+        "You’ve done enough today, let me take care of you.",
+        "I wish I could hug you now. You’re amazing!"
+      ],
+      sleepy: [
+        "Dream sweet dreams about baby and us 🛌",
+        "Close your eyes and let me watch over you.",
+        "Theodore is sleepy too 😴"
+      ]
+    };
+
+    function logMood(mood) {
+      const messages = moodMessages[mood];
+      const msg = messages[Math.floor(Math.random() * messages.length)];
+      document.getElementById('mood-response').textContent = msg;
+    }
+
+    // Surprise Message
     const messages = [
       "I whispered your name in my prayers today.",
       "Ya xate ti, only little.",
@@ -131,24 +188,17 @@
     function showMessage() {
       const msg = messages[Math.floor(Math.random() * messages.length)];
       document.getElementById('output').textContent = msg;
-      confetti({ particleCount: 80, spread: 70 });
+      confetti({ particleCount: 100, spread: 70 });
     }
 
+    // Love Notes
     function saveNote() {
       const text = document.getElementById('note-input').value.trim();
       if (!text) return;
-
       const notes = JSON.parse(localStorage.getItem('angelinaNotes') || '[]');
       notes.push({ text, date: new Date().toLocaleDateString() });
       localStorage.setItem('angelinaNotes', JSON.stringify(notes));
       document.getElementById('note-input').value = '';
-      renderNotes();
-    }
-
-    function deleteNote(index) {
-      const notes = JSON.parse(localStorage.getItem('angelinaNotes') || '[]');
-      notes.splice(index, 1);
-      localStorage.setItem('angelinaNotes', JSON.stringify(notes));
       renderNotes();
     }
 
@@ -159,7 +209,6 @@
         list.innerHTML = "<p>No notes yet.</p>";
         return;
       }
-
       let html = "<ul>";
       notes.forEach((note, idx) => {
         html += `<li><span><strong>${note.date}:</strong> ${note.text}</span> <button onclick="deleteNote(${idx})">Delete</button></li>`;
@@ -168,7 +217,51 @@
       list.innerHTML = html;
     }
 
-    window.onload = renderNotes;
+    function deleteNote(index) {
+      const notes = JSON.parse(localStorage.getItem('angelinaNotes') || '[]');
+      notes.splice(index, 1);
+      localStorage.setItem('angelinaNotes', JSON.stringify(notes));
+      renderNotes();
+    }
+
+    // Baby Names
+    function addBabyName() {
+      const name = document.getElementById('name-input').value.trim();
+      if (!name) return;
+      const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
+      names.push(name);
+      localStorage.setItem('babyNames', JSON.stringify(names));
+      document.getElementById('name-input').value = '';
+      renderNames();
+    }
+
+    function renderNames() {
+      const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
+      const list = document.getElementById('baby-names-list');
+      if (!names.length) {
+        list.innerHTML = "<p>No names yet.</p>";
+        return;
+      }
+      let html = "<ul>";
+      names.forEach((name, idx) => {
+        html += `<li>${name} <button onclick="deleteBabyName(${idx})">Delete</button></li>`;
+      });
+      html += "</ul>";
+      list.innerHTML = html;
+    }
+
+    function deleteBabyName(index) {
+      const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
+      names.splice(index, 1);
+      localStorage.setItem('babyNames', JSON.stringify(names));
+      renderNames();
+    }
+
+    // Initial Load
+    window.onload = () => {
+      renderNotes();
+      renderNames();
+    };
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js')
