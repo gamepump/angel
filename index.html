@@ -7,7 +7,6 @@
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#ff8fab" />
   <style>
-    /* Same CSS as before, unchanged */
     body {
       font-family: Arial, sans-serif;
       background: #ffd6e0;
@@ -55,7 +54,7 @@
       border-radius: 6px;
       box-sizing: border-box;
     }
-    #output, #mood-response, #pregnancy-info, #baby-names-list, #note-list {
+    #output, #mood-response, #pregnancy-info, #baby-names-list, #note-list, #mood-log-list {
       background: #ffe5ec;
       border-radius: 8px;
       padding: 15px;
@@ -83,11 +82,6 @@
       padding: 4px 8px;
     }
   </style>
-
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 </head>
 <body>
   <h1>💌 Angelina’s Love Sanctuary</h1>
@@ -102,6 +96,12 @@
       <button onclick="logMood('sleepy')">😴 Sleepy</button>
     </div>
     <div id="mood-response"></div>
+  </section>
+
+  <!-- Mood Log List -->
+  <section>
+    <h2>📝 Recent Mood Logs</h2>
+    <div id="mood-log-list"></div>
   </section>
 
   <!-- Pregnancy Tracker -->
@@ -139,20 +139,22 @@
     <div id="output"></div>
   </section>
 
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDWIloLcFrlLTkNBDn0XZsOhpdyATjGDGo",
       authDomain: "angelinalovehuss.firebaseapp.com",
       projectId: "angelinalovehuss",
-      storageBucket: "angelinalovehuss.firebasestorage.app",
+      storageBucket: "angelinalovehuss.appspot.com",
       messagingSenderId: "776961218617",
       appId: "1:776961218617:web:33cdb0340f4c72e61ad5e8"
     };
-
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-    firebase.auth().signInAnonymously();
 
     const LMP_DATE = new Date("2025-03-14T00:00:00");
     const DUE_DATE = new Date(LMP_DATE.getTime() + 280 * 24 * 60 * 60 * 1000);
@@ -168,12 +170,12 @@
       const days = Math.floor((now - LMP_DATE) / (1000 * 60 * 60 * 24));
       const weeks = Math.floor(days / 7);
       const remainder = days % 7;
-      const factList = WEEKLY_FACTS[weeks] || ["No specific facts for this week yet."];
+      const facts = WEEKLY_FACTS[weeks] || ["No specific facts for this week yet."];
+
       document.getElementById('pregnancy-info').innerHTML = `
         <p>📅 Due Date: <strong>${DUE_DATE.toDateString()}</strong></p>
         <p>⏳ You are <strong>${weeks} weeks and ${remainder} days</strong> pregnant.</p>
-        <ul>${factList.map(f => `<li>${f}</li>`).join('')}</ul>
-      `;
+        <ul>${facts.map(f => `<li>${f}</li>`).join('')}</ul>`;
     }
 
     const moodMessages = {
@@ -184,26 +186,36 @@
     };
 
     function logMood(mood) {
-      const msg = moodMessages[mood];
-      const message = msg[Math.floor(Math.random() * msg.length)];
-      document.getElementById('mood-response').textContent = message;
-      db.collection("moods").add({
-        mood,
-        message,
-        date: new Date().toISOString()
+      const msg = moodMessages[mood][Math.floor(Math.random() * moodMessages[mood].length)];
+      document.getElementById('mood-response').textContent = msg;
+      db.collection("moods").add({ mood, message: msg, date: Date.now() });
+    }
+
+    function renderMoodLogs() {
+      const container = document.getElementById("mood-log-list");
+      db.collection("moods").orderBy("date", "desc").limit(10).onSnapshot(snapshot => {
+        let html = "<ul>";
+        snapshot.forEach(doc => {
+          const { mood, message, date } = doc.data();
+          const d = new Date(date).toLocaleString();
+          html += `<li><strong>${d}:</strong> ${mood} — ${message}</li>`;
+        });
+        html += "</ul>";
+        container.innerHTML = html;
       });
     }
 
+    const surpriseMessages = [
+      "I kiss your cheeks 100 times each night.",
+      "You're carrying our baby like a queen 👑",
+      "Let’s dance again like we did in UAE 💃",
+      "You make everything beautiful.",
+      "Even on hard days, you're my sunshine ☀️",
+      "I'd choose you in every lifetime.",
+      "Theodore and I miss you so much 💌"
+    ];
+
     function showMessage() {
-      const surpriseMessages = [
-        "I kiss your cheeks 100 times each night.",
-        "You're carrying our baby like a queen 👑",
-        "Let’s dance again like we did in UAE 💃",
-        "You make everything beautiful.",
-        "Even on hard days, you're my sunshine ☀️",
-        "I'd choose you in every lifetime.",
-        "Theodore and I miss you so much 💌"
-      ];
       const msg = surpriseMessages[Math.floor(Math.random() * surpriseMessages.length)];
       document.getElementById('output').textContent = msg;
       confetti({ particleCount: 100, spread: 70 });
@@ -212,25 +224,21 @@
     function saveNote() {
       const note = document.getElementById('note-input').value.trim();
       if (!note) return;
-      db.collection("notes").add({
-        text: note,
-        date: new Date().toISOString()
-      }).then(() => {
-        document.getElementById('note-input').value = '';
-      });
+      db.collection("notes").add({ text: note, date: new Date().toLocaleString() });
+      document.getElementById('note-input').value = '';
     }
 
     function renderNotes() {
       const list = document.getElementById('note-list');
       db.collection("notes").orderBy("date", "desc").onSnapshot(snapshot => {
-        let html = "<ul>";
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          const date = new Date(data.date).toLocaleDateString();
-          html += `<li><strong>${date}:</strong> ${data.text} <button onclick="deleteNote('${doc.id}')">Delete</button></li>`;
-        });
-        html += "</ul>";
-        list.innerHTML = html;
+        if (snapshot.empty) {
+          list.innerHTML = "<p>No notes yet.</p>";
+          return;
+        }
+        list.innerHTML = '<ul>' +
+          snapshot.docs.map(doc =>
+            `<li><strong>${doc.data().date}:</strong> ${doc.data().text} <button onclick="deleteNote('${doc.id}')">Delete</button></li>`
+          ).join('') + '</ul>';
       });
     }
 
@@ -241,24 +249,21 @@
     function addBabyName() {
       const name = document.getElementById('name-input').value.trim();
       if (!name) return;
-      db.collection("babyNames").add({
-        name,
-        date: new Date().toISOString()
-      }).then(() => {
-        document.getElementById('name-input').value = '';
-      });
+      db.collection("babyNames").add({ name, date: new Date().toLocaleString() });
+      document.getElementById('name-input').value = '';
     }
 
     function renderNames() {
       const list = document.getElementById('baby-names-list');
       db.collection("babyNames").orderBy("date", "desc").onSnapshot(snapshot => {
-        let html = "<ul>";
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          html += `<li>${data.name} <button onclick="deleteName('${doc.id}')">Delete</button></li>`;
-        });
-        html += "</ul>";
-        list.innerHTML = html;
+        if (snapshot.empty) {
+          list.innerHTML = "<p>No names yet.</p>";
+          return;
+        }
+        list.innerHTML = '<ul>' +
+          snapshot.docs.map(doc =>
+            `<li>${doc.data().name} <button onclick="deleteName('${doc.id}')">Delete</button></li>`
+          ).join('') + '</ul>';
       });
     }
 
@@ -270,6 +275,7 @@
       updatePregnancy();
       renderNotes();
       renderNames();
+      renderMoodLogs();
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js');
       }
