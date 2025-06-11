@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Angelina 🌸</title>
+    <link rel="manifest" href="/manifest.json">
+    <style>
+        :root {
+            --pink: #ffd6e0;
+            --dark-pink: #ff8fab;
+            --white: #fff;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: var(--pink);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1, h2 { color: #c9184a; }
+        section {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+        }
+        button {
+            background: var(--dark-pink);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover { opacity: 0.9; }
+        #random-message {
+            font-style: italic;
+            margin: 10px 0;
+            color: #c9184a;
+        }
+        .emoji-btn { font-size: 20px; }
+        textarea, input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        #baby-names-list {
+            list-style: none;
+            padding: 0;
+        }
+        #baby-names-list li {
+            background: var(--pink);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌺 Hussam & Angelina's Love Sanctuary 🌺</h1>
+    
+    <!-- Pregnancy Countdown -->
+    <section id="pregnancy-countdown">
+        <h2>👶 Our Baby's Journey</h2>
+        <p id="countdown"></p>
+        <p id="baby-size"></p>
+    </section>
+
+    <!-- Mood Tracker -->
+    <section id="mood-tracker">
+        <h2>🌈 How Are You Feeling Today, Angelina?</h2>
+        <div>
+            <button class="emoji-btn" onclick="logMood('happy')">😊 Happy</button>
+            <button class="emoji-btn" onclick="logMood('tired')">😴 Tired</button>
+            <button class="emoji-btn" onclick="logMood('emotional')">🥺 Emotional</button>
+            <button class="emoji-btn" onclick="logMood('excited')">🎉 Excited</button>
+        </div>
+        <div id="mood-response"></div>
+    </section>
+
+    <!-- Surprise Button -->
+    <section>
+        <h2>💖 Click for a Surprise from Hussam</h2>
+        <button onclick="showRandomLove()">Open Love Jar 💌</button>
+        <p id="random-message"></p>
+    </section>
+
+    <!-- Shared Notes -->
+    <section id="shared-notes">
+        <h2>📝 Our Private Journal</h2>
+        <textarea id="note-input" placeholder="Write a note for each other..."></textarea>
+        <button onclick="saveNote()">Save Note</button>
+        <div id="notes-display"></div>
+    </section>
+
+    <!-- Baby Names Ideas -->
+    <section id="baby-names">
+        <h2>👶 Baby Names We Love</h2>
+        <input type="text" id="name-input" placeholder="Add a name...">
+        <button onclick="addBabyName()">Add Name</button>
+        <ul id="baby-names-list"></ul>
+    </section>
+
+    <!-- Install as App Button -->
+    <button id="install-btn" style="display: none;">📲 Install as App</button>
+
+    <script>
+        // ===== PREGNANCY COUNTDOWN =====
+        const dueDate = new Date('2024-12-15'); // UPDATE THIS TO YOUR DUE DATE
+        const startDate = new Date('2024-03-20'); // Angelina's Week 12 + 2 days (adjust as needed)
+        
+        function updatePregnancyCountdown() {
+            const today = new Date();
+            const daysPassed = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+            const weeks = Math.floor(daysPassed / 7);
+            const days = daysPassed % 7;
+            
+            const daysLeft = Math.floor((dueDate - today) / (1000 * 60 * 60 * 24));
+            const weeksLeft = Math.floor(daysLeft / 7);
+            const remainingDays = daysLeft % 7;
+            
+            document.getElementById('countdown').innerHTML = `
+                <strong>${weeks} weeks & ${days} days</strong> along<br>
+                <strong>${weeksLeft} weeks & ${remainingDays} days</strong> until we meet our baby!
+            `;
+            
+            // Baby size comparison (simplified)
+            const babySizes = [
+                { week: 12, size: "a plum" }, { week: 16, size: "an avocado" },
+                { week: 20, size: "a banana" }, { week: 24, size: "an eggplant" },
+                { week: 28, size: "a squash" }, { week: 32, size: "a pineapple" },
+                { week: 36, size: "a honeydew" }, { week: 40, size: "a watermelon" }
+            ];
+            let currentSize = "a blueberry";
+            for (const size of babySizes) {
+                if (weeks >= size.week) currentSize = size.size;
+            }
+            document.getElementById('baby-size').innerHTML = `This week, our baby is the size of <strong>${currentSize}</strong>!`;
+        }
+        updatePregnancyCountdown();
+        setInterval(updatePregnancyCountdown, 86400000); // Update daily
+
+        // ===== MOOD TRACKER =====
+        function logMood(mood) {
+            const responses = {
+                happy: "I love seeing you happy, habibti! Keep shining. 🌟",
+                tired: "You’re doing amazing. Rest whenever you need—I’ve got you. 💤",
+                emotional: "Your feelings are valid. I’m here to hold you through it all. 🤗",
+                excited: "Your excitement makes my heart soar! We’re in this together. 🎯"
+            };
+            document.getElementById('mood-response').innerHTML = `
+                <p><strong>Hussam says:</strong> ${responses[mood]}</p>
+            `;
+        }
+
+        // ===== SURPRISE BUTTON =====
+        function showRandomLove() {
+            const messages = [
+                "I fell in love with you all over again today.",
+                "Our baby is lucky to have you as their mom.",
+                "Remember our first date? I knew you were the one.",
+                "You’re my greatest adventure.",
+                "I’ll always rub your feet when you’re tired—promise."
+            ];
+            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+            document.getElementById('random-message').textContent = randomMsg;
+            
+            // Bonus: Confetti effect!
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 100, spread: 70 });
+            }
+        }
+
+        // ===== SHARED NOTES =====
+        function saveNote() {
+            const note = document.getElementById('note-input').value;
+            if (!note) return;
+            const notes = JSON.parse(localStorage.getItem('loveNotes') || '[]');
+            notes.push({ text: note, date: new Date().toLocaleDateString() });
+            localStorage.setItem('loveNotes', JSON.stringify(notes));
+            displayNotes();
+            document.getElementById('note-input').value = '';
+        }
+
+        function displayNotes() {
+            const notes = JSON.parse(localStorage.getItem('loveNotes') || '[]');
+            let html = '';
+            notes.forEach(note => {
+                html += `<p><strong>${note.date}:</strong> ${note.text}</p>`;
+            });
+            document.getElementById('notes-display').innerHTML = html;
+        }
+        displayNotes();
+
+        // ===== BABY NAMES =====
+        function addBabyName() {
+            const name = document.getElementById('name-input').value.trim();
+            if (!name) return;
+            const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
+            names.push(name);
+            localStorage.setItem('babyNames', JSON.stringify(names));
+            displayBabyNames();
+            document.getElementById('name-input').value = '';
+        }
+
+        function displayBabyNames() {
+            const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
+            let html = '';
+            names.forEach(name => {
+                html += `<li>${name} <button onclick="removeName('${name}')">❌</button></li>`;
+            });
+            document.getElementById('baby-names-list').innerHTML = html;
+        }
+
+        function removeName(name) {
+            let names = JSON.parse(localStorage.getItem('babyNames') || '[]');
+            names = names.filter(n => n !== name);
+            localStorage.setItem('babyNames', JSON.stringify(names));
+            displayBabyNames();
+        }
+        displayBabyNames();
+
+        // ===== PWA INSTALLATION =====
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('install-btn').style.display = 'block';
+        });
+
+        document.getElementById('install-btn').addEventListener('click', () => {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(() => {
+                deferredPrompt = null;
+            });
+        });
+    </script>
+
+    <!-- Confetti.js for surprises (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <!-- Manifest for PWA -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
+</body>
+</html>
