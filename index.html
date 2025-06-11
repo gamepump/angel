@@ -116,8 +116,8 @@
 
     <!-- Daily Affirmation -->
     <section id="daily-affirmation">
-        <h2>🌹 Hussam’s Daily Affirmation</h2>
-        <div id="affirmation-text">"You’re already the perfect mother to our baby."</div>
+        <h2>🌹 Hussam's Daily Affirmation</h2>
+        <div id="affirmation-text">"You're already the perfect mother to our baby."</div>
         <button onclick="newAffirmation()">Another One ➡️</button>
     </section>
 
@@ -150,7 +150,7 @@
     <script>
         // ===== PREGNANCY COUNTDOWN =====
         const dueDate = new Date('2024-12-15'); // 👈 UPDATE TO YOUR DUE DATE
-        const startDate = new Date('2024-03-27'); // 👈 13 weeks ago (adjust as needed)
+        const startDate = new Date('2024-03-11'); // 👈 Updated to make it exactly 13 weeks on June 11th
         
         function updatePregnancyCountdown() {
             const today = new Date();
@@ -177,7 +177,7 @@
             
             // Baby size + fun facts
             const babyMilestones = [
-                { week: 13, size: "a peach 🍑", desc: "Baby’s tiny fingerprints are forming!" },
+                { week: 13, size: "a peach 🍑", desc: "Baby's tiny fingerprints are forming!" },
                 { week: 16, size: "an avocado 🥑", desc: "Baby can hear your voice now." },
                 { week: 20, size: "a banana 🍌", desc: "Halfway there, my love!" },
                 { week: 24, size: "an ear of corn 🌽", desc: "Baby reacts to your touch." },
@@ -187,8 +187,8 @@
                 { week: 40, size: "a watermelon 🍉", desc: "Happy due date!" }
             ];
             
-            let currentSize = "a blueberry";
-            let currentDesc = "Growing stronger every day!";
+            let currentSize = "a peach 🍑";
+            let currentDesc = "Baby's tiny fingerprints are forming!";
             for (const milestone of babyMilestones) {
                 if (weeks >= milestone.week) {
                     currentSize = milestone.size;
@@ -208,23 +208,23 @@
             const responses = {
                 happy: [
                     "That smile of yours could power the sun. Keep glowing! ☀️",
-                    "Tell me what’s making you happy—I want to savor this moment with you.",
-                    "You’re my favorite reason to celebrate. 🎉"
+                    "Tell me what's making you happy—I want to savor this moment with you.",
+                    "You're my favorite reason to celebrate. 🎉"
                 ],
                 tired: [
                     "Let me draw you a bath tonight. You deserve it, habibti. 🛁",
-                    "I’ll handle everything today. Just rest and grow our baby. 💤",
+                    "I'll handle everything today. Just rest and grow our baby. 💤",
                     "Foot rub + your favorite show? Say the word. 👣"
                 ],
                 emotional: [
-                    "Your tears are sacred. I’m here to hold them and you. 🤗",
-                    "Let’s cuddle and talk—or just sit in silence. I’m here.",
-                    "Pregnancy hormones are no joke. You’re doing amazing."
+                    "Your tears are sacred. I'm here to hold them and you. 🤗",
+                    "Let's cuddle and talk—or just sit in silence. I'm here.",
+                    "Pregnancy hormones are no joke. You're doing amazing."
                 ],
                 excited: [
                     "Your excitement is my favorite sound! Tell me all about it. 😄",
-                    "We’re one step closer to holding our little one! 🎊",
-                    "I love seeing you light up like this. What’s on your mind?"
+                    "We're one step closer to holding our little one! 🎊",
+                    "I love seeing you light up like this. What's on your mind?"
                 ]
             };
             const randomResponse = responses[mood][Math.floor(Math.random() * responses[mood].length)];
@@ -235,11 +235,11 @@
 
         // ===== DAILY AFFIRMATIONS =====
         const affirmations = [
-            "I’m so proud to be your partner in this journey.",
-            "You’re my greatest adventure.",
-            "However you feel today, I’m here—no conditions.",
-            "I’ll never stop cherishing the way you laugh.",
-            "You’re the strongest person I know.",
+            "I'm so proud to be your partner in this journey.",
+            "You're my greatest adventure.",
+            "However you feel today, I'm here—no conditions.",
+            "I'll never stop cherishing the way you laugh.",
+            "You're the strongest person I know.",
             "Thank you for carrying our baby so beautifully."
         ];
         function newAffirmation() {
@@ -251,15 +251,15 @@
         function showRandomLove() {
             const messages = [
                 "I whispered your name in my prayers today.",
-                "You’re the strongest woman I know—carrying our child like a warrior.",
-                "Remember when we slow-danced in the kitchen? Let’s do that tonight.",
-                "I’d choose you in every lifetime.",
+                "You're the strongest woman I know—carrying our child like a warrior.",
+                "Remember when we slow-danced in the kitchen? Let's do that tonight.",
+                "I'd choose you in every lifetime.",
                 "Your laugh is my favorite melody.",
                 "I packed your favorite snack for later. Check the fridge. 🍓",
-                "You’re already the perfect mother to our baby.",
+                "You're already the perfect mother to our baby.",
                 "I fell in love with you all over again today.",
-                "Let’s name our baby after something that reminds me of you.",
-                "Even on your worst days, you’re still my dream come true."
+                "Let's name our baby after something that reminds me of you.",
+                "Even on your worst days, you're still my dream come true."
             ];
             const randomMsg = messages[Math.floor(Math.random() * messages.length)];
             document.getElementById('random-message').textContent = randomMsg;
