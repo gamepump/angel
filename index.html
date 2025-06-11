@@ -147,61 +147,61 @@
     <!-- Install as App Button -->
     <button id="install-btn" style="display: none;">📲 Install as App</button>
 
-    <script>
-        // ===== PREGNANCY COUNTDOWN =====
-        const dueDate = new Date('2024-12-15'); // Due date remains December 15
-        const startDate = new Date('2024-03-11'); // 13 weeks before June 11 is March 11
+   <script>
+    // ===== PREGNANCY COUNTDOWN =====
+    const dueDate = new Date('2024-12-15'); // Due date remains December 15
+    const startDate = new Date('2024-03-11'); // 13 weeks before June 11 is March 11
+    
+    function updatePregnancyCountdown() {
+        const today = new Date();
+        const daysPassed = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+        const weeks = Math.floor(daysPassed / 7);
+        const days = daysPassed % 7;
         
-        function updatePregnancyCountdown() {
-            const today = new Date();
-            const totalDays = Math.floor((dueDate - startDate) / (1000 * 60 * 60 * 24));
-            const daysPassed = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
-            const weeks = Math.floor(daysPassed / 7);
-            const days = daysPassed % 7;
-            
-            const daysLeft = Math.floor((dueDate - today) / (1000 * 60 * 60 * 24));
-            const weeksLeft = Math.floor(daysLeft / 7);
-            const remainingDays = daysLeft % 7;
-            
-            // Progress bar - calculate percentage based on 40 week pregnancy
-            const progressPercent = Math.min(100, (weeks / 40 * 100)).toFixed(1);
-            
-            document.getElementById('countdown').innerHTML = `
-                <strong>${weeks} weeks & ${days} days</strong> along<br>
-                <strong>${weeksLeft} weeks & ${remainingDays} days</strong> to go!<br>
-                <div class="progress-bar">
-                    <div class="progress" style="width: ${progressPercent}%"></div>
-                    <span>${progressPercent}%</span>
-                </div>
-            `;
-            
-            // Baby size + fun facts
-            const babyMilestones = [
-                { week: 13, size: "a peach 🍑", desc: "Baby's tiny fingerprints are forming!" },
-                { week: 16, size: "an avocado 🥑", desc: "Baby can hear your voice now." },
-                { week: 20, size: "a banana 🍌", desc: "Halfway there, my love!" },
-                { week: 24, size: "an ear of corn 🌽", desc: "Baby reacts to your touch." },
-                { week: 28, size: "an eggplant 🍆", desc: "Eyes can blink now!" },
-                { week: 32, size: "a squash 🎃", desc: "Baby dreams in the womb." },
-                { week: 36, size: "a honeydew 🍈", desc: "Almost ready to meet us!" },
-                { week: 40, size: "a watermelon 🍉", desc: "Happy due date!" }
-            ];
-            
-            let currentSize = "a peach 🍑";
-            let currentDesc = "Baby's tiny fingerprints are forming!";
-            for (const milestone of babyMilestones) {
-                if (weeks >= milestone.week) {
-                    currentSize = milestone.size;
-                    currentDesc = milestone.desc;
-                }
+        const daysLeft = Math.floor((dueDate - today) / (1000 * 60 * 60 * 24));
+        const weeksLeft = Math.floor(daysLeft / 7);
+        const remainingDays = daysLeft % 7;
+        
+        // Progress bar - calculate percentage based on 40 week pregnancy
+        const progressPercent = Math.min(100, (weeks / 40 * 100)).toFixed(1);
+        
+        document.getElementById('countdown').innerHTML = `
+            <strong>${weeks} weeks & ${days} days</strong> along<br>
+            <strong>${weeksLeft} weeks & ${remainingDays} days</strong> to go!<br>
+            <div class="progress-bar">
+                <div class="progress" style="width: ${progressPercent}%"></div>
+                <span>${progressPercent}%</span>
+            </div>
+        `;
+        
+        // Baby size + fun facts
+        const babyMilestones = [
+            { week: 13, size: "a peach 🍑", desc: "Baby's tiny fingerprints are forming!" },
+            { week: 16, size: "an avocado 🥑", desc: "Baby can hear your voice now." },
+            { week: 20, size: "a banana 🍌", desc: "Halfway there, my love!" },
+            { week: 24, size: "an ear of corn 🌽", desc: "Baby reacts to your touch." },
+            { week: 28, size: "an eggplant 🍆", desc: "Eyes can blink now!" },
+            { week: 32, size: "a squash 🎃", desc: "Baby dreams in the womb." },
+            { week: 36, size: "a honeydew 🍈", desc: "Almost ready to meet us!" },
+            { week: 40, size: "a watermelon 🍉", desc: "Happy due date!" }
+        ];
+        
+        let currentSize = "a peach 🍑";
+        let currentDesc = "Baby's tiny fingerprints are forming!";
+        for (const milestone of babyMilestones) {
+            if (weeks >= milestone.week) {
+                currentSize = milestone.size;
+                currentDesc = milestone.desc;
             }
-            document.getElementById('baby-size').innerHTML = `
-                This week, our baby is the size of <strong>${currentSize}</strong>!<br>
-                <small>✨ ${currentDesc}</small>
-            `;
         }
-        updatePregnancyCountdown();
-        setInterval(updatePregnancyCountdown, 86400000); // Update daily
+        document.getElementById('baby-size').innerHTML = `
+            This week, our baby is the size of <strong>${currentSize}</strong>!<br>
+            <small>✨ ${currentDesc}</small>
+        `;
+    }
+    updatePregnancyCountdown();
+    setInterval(updatePregnancyCountdown, 86400000); // Update daily
+</script>
 
         // ===== MOOD TRACKER =====
         function logMood(mood) {
