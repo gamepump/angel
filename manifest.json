@@ -1,11 +1,10 @@
 {
-  "name": "Angelina's Love Sanctuary",
-  "short_name": "LoveApp",
-  "start_url": ".",
+  "name": "Angelina's Love App",
+  "short_name": "AngelinaLove",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffd6e0",
   "theme_color": "#ff8fab",
-  "description": "A daily dose of love for Angelina from Hussam.",
   "icons": [
     {
       "src": "icon-192.png",
