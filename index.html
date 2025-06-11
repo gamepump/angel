@@ -2,92 +2,91 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Angelina's Love Sanctuary 💗</title>
-  <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#ff8fab"/>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#ff8fab" />
   <style>
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: Arial, sans-serif;
       background: #ffd6e0;
-      margin: 0;
-      padding: 20px;
       color: #333;
       max-width: 800px;
-      margin: auto;
+      margin: 0 auto;
+      padding: 20px;
     }
     h1, h2 {
-      text-align: center;
       color: #c9184a;
+      text-align: center;
     }
     section {
       background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       padding: 20px;
-      margin: 20px 0;
-      border-radius: 15px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
     }
-    .button-container {
+    .btns {
       display: flex;
       justify-content: center;
       gap: 10px;
       flex-wrap: wrap;
     }
     button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 30px;
       background: #ff8fab;
-      color: white;
+      border: none;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 25px;
       font-size: 16px;
       cursor: pointer;
       transition: 0.3s;
     }
     button:hover {
-      opacity: 0.9;
       transform: scale(1.05);
+      opacity: 0.9;
     }
-    textarea, input {
+    input, textarea {
       width: 100%;
-      padding: 10px;
-      margin: 10px 0;
+      padding: 11px;
+      border-radius: 6px;
       border: 1px solid #ddd;
-      border-radius: 5px;
+      margin: 10px 0;
+      box-sizing: border-box;
     }
-    #output, #note-list, #baby-names-list, #mood-response, #pregnancy-facts {
+    #mood-response,
+    #pregnancy-facts,
+    #output,
+    #baby-names-list,
+    #note-list {
       background: #ffe5ec;
-      margin-top: 15px;
       padding: 15px;
-      border-radius: 10px;
+      border-radius: 8px;
       color: #c9184a;
+      margin-top: 10px;
     }
     ul {
       list-style: none;
       padding: 0;
     }
-    ul li {
-      padding: 10px;
+    li {
       background: #ffd6e0;
-      margin: 5px 0;
-      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 5px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      border-radius: 5px;
     }
-    ul li button {
-      background: #c9184a;
-      font-size: 12px;
-      padding: 4px 8px;
-    }
+    li button { font-size:12px; background:#c9184a; }
   </style>
 </head>
 <body>
-  <h1>💌 For My Angelina 💌</h1>
+  <h1>Angelina’s Love Sanctuary</h1>
 
-  <!-- Mood Tracker -->
+  <!-- Mood -->
   <section>
-    <h2>🧘‍♀️ How Are You Feeling Today?</h2>
-    <div class="button-container">
+    <h2>🧘 How are you feeling today?</h2>
+    <div class="btns">
       <button onclick="logMood('happy')">😊 Happy</button>
       <button onclick="logMood('relaxed')">🌿 Relaxed</button>
       <button onclick="logMood('tired')">😩 Tired</button>
@@ -96,176 +95,114 @@
     <div id="mood-response"></div>
   </section>
 
-  <!-- Pregnancy Timeline -->
+  <!-- Pregnancy -->
   <section>
-    <h2>🤰 Baby Update - 12 Weeks & 1 Day</h2>
+    <h2>🤰 Pregnancy Update (12 weeks 1 day)</h2>
     <div id="pregnancy-facts">
       <p>👶 Your baby is the size of a peach!</p>
       <ul>
-        <li>🧠 Unique fingerprints are forming.</li>
-        <li>👂 Baby can hear your voice.</li>
+        <li>🔍 Unique fingerprints are forming.</li>
+        <li>👂 They can hear your voice.</li>
         <li>🦴 Bones are getting stronger.</li>
-        <li>💓 The heart beats at 160 bpm.</li>
+        <li>💓 Heartbeat around 160 bpm.</li>
       </ul>
     </div>
   </section>
 
-  <!-- Baby Name Ideas -->
+  <!-- Baby Names -->
   <section>
     <h2>👶 Baby Name Ideas</h2>
-    <input type="text" id="name-input" placeholder="Add a name you love...">
-    <div class="button-container">
-      <button onclick="addBabyName()">Add Name</button>
-    </div>
+    <input type="text" id="name-input" placeholder="Suggest a name..."/>
+    <div class="btns"><button onclick="addBabyName()">Add Name</button></div>
     <div id="baby-names-list"></div>
   </section>
 
   <!-- Love Notes -->
   <section>
     <h2>💖 Love Notes</h2>
-    <textarea id="note-input" placeholder="Write something sweet..." rows="4"></textarea>
-    <div class="button-container">
-      <button onclick="saveNote()">Save Note</button>
-    </div>
+    <textarea id="note-input" placeholder="Write a note..."></textarea>
+    <div class="btns"><button onclick="saveNote()">Save Note</button></div>
     <div id="note-list"></div>
   </section>
 
   <!-- Surprise Message -->
   <section>
     <h2>🎁 Surprise from Hussam</h2>
-    <div class="button-container">
-      <button onclick="showMessage()">Show Me Love</button>
-    </div>
+    <div class="btns"><button onclick="showMessage()">Show Me Love</button></div>
     <div id="output"></div>
   </section>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
-    // Mood Tracker
-    const moodMessages = {
-      happy: [
-        "That smile lights up everything! 🌞",
-        "Seeing you happy makes my heart melt 💓",
-        "You're glowing today, angel!"
-      ],
-      relaxed: [
-        "Breathe in peace, breathe out stress 🧘",
-        "You deserve every calm moment.",
-        "Let the world slow down around you 🌸"
-      ],
-      tired: [
-        "You’re growing a tiny human — rest, my love 💤",
-        "You’ve done enough today, let me take care of you.",
-        "I wish I could hug you now. You’re amazing!"
-      ],
-      sleepy: [
-        "Dream sweet dreams about baby and us 🛌",
-        "Close your eyes and let me watch over you.",
-        "Theodore is sleepy too 😴"
-      ]
+    const moodMsgs = {
+      happy: ["That smile lights up everything! 😊","Seeing you happy warms my heart 💓","Your joy is contagious!"],
+      relaxed: ["Take this calm moment to breathe deeply 🌿","You deserve peace — let me handle it all.","Enjoy the serenity, my love."],
+      tired: ["Growing our baby is hard work — rest now 💤","Let me pamper you today.","You’re incredible; take a break 🤗"],
+      sleepy: ["Drift into beautiful dreams 😴","May your sleep bring calm and warmth.","Sweet dreams, my darling."]
     };
 
     function logMood(mood) {
-      const messages = moodMessages[mood];
-      const msg = messages[Math.floor(Math.random() * messages.length)];
-      document.getElementById('mood-response').textContent = msg;
+      const arr = moodMsgs[mood];
+      document.getElementById('mood-response').textContent = arr[Math.floor(Math.random() * arr.length)];
     }
 
-    // Surprise Message
-    const messages = [
-      "I whispered your name in my prayers today.",
+    const surpriseMsgs = [
+      "I whispered your name in my prayers.",
       "Ya xate ti, only little.",
-      "You're the strongest woman I know—carrying our child like a warrior.",
-      "Remember when we slow-danced in UAE? Let's do that tonight.",
+      "You carry our child like a warrior.",
+      "Let's slow-dance tonight 💃",
       "I'd choose you in every lifetime.",
       "Your laugh is my favorite melody.",
-      "You're already the perfect mother to our baby.",
-      "I fell in love with you all over again every day.",
-      "Theodore misses you.... me too!!",
-      "Even on your worst days, you're still my dream come true."
+      "You're already the perfect mother.",
+      "I fall in love with you over and over.",
+      "Theodore misses you... me too!",
+      "Even on your worst days, you’re still my dream."
     ];
-
     function showMessage() {
-      const msg = messages[Math.floor(Math.random() * messages.length)];
-      document.getElementById('output').textContent = msg;
+      document.getElementById('output').textContent = surpriseMsgs[Math.floor(Math.random() * surpriseMsgs.length)];
       confetti({ particleCount: 100, spread: 70 });
     }
 
-    // Love Notes
-    function saveNote() {
-      const text = document.getElementById('note-input').value.trim();
-      if (!text) return;
-      const notes = JSON.parse(localStorage.getItem('angelinaNotes') || '[]');
-      notes.push({ text, date: new Date().toLocaleDateString() });
-      localStorage.setItem('angelinaNotes', JSON.stringify(notes));
-      document.getElementById('note-input').value = '';
-      renderNotes();
+    function renderList(key, containerId, renderFn) {
+      const list = JSON.parse(localStorage.getItem(key) || '[]');
+      const div = document.getElementById(containerId);
+      if (!list.length) { div.innerHTML = "<p>Nothing yet.</p>"; return; }
+      div.innerHTML = '<ul>' + list.map((item, i) => renderFn(item, i)).join('') + '</ul>';
     }
 
-    function renderNotes() {
-      const notes = JSON.parse(localStorage.getItem('angelinaNotes') || '[]');
-      const list = document.getElementById('note-list');
-      if (!notes.length) {
-        list.innerHTML = "<p>No notes yet.</p>";
-        return;
-      }
-      let html = "<ul>";
-      notes.forEach((note, idx) => {
-        html += `<li><span><strong>${note.date}:</strong> ${note.text}</span> <button onclick="deleteNote(${idx})">Delete</button></li>`;
-      });
-      html += "</ul>";
-      list.innerHTML = html;
-    }
-
-    function deleteNote(index) {
-      const notes = JSON.parse(localStorage.getItem('angelinaNotes') || '[]');
-      notes.splice(index, 1);
-      localStorage.setItem('angelinaNotes', JSON.stringify(notes));
-      renderNotes();
-    }
-
-    // Baby Names
     function addBabyName() {
-      const name = document.getElementById('name-input').value.trim();
-      if (!name) return;
-      const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
-      names.push(name);
-      localStorage.setItem('babyNames', JSON.stringify(names));
-      document.getElementById('name-input').value = '';
-      renderNames();
+      const input = document.getElementById('name-input');
+      const v = input.value.trim(); if (!v) return;
+      const arr = JSON.parse(localStorage.getItem('babyNames')||'[]');
+      arr.push(v); localStorage.setItem('babyNames', JSON.stringify(arr));
+      input.value=''; renderList('babyNames','baby-names-list',(n,i)=>`<li>${n}<button onclick="delItem('babyNames','baby-names-list',${i})">Delete</button></li>`);
     }
 
-    function renderNames() {
-      const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
-      const list = document.getElementById('baby-names-list');
-      if (!names.length) {
-        list.innerHTML = "<p>No names yet.</p>";
-        return;
-      }
-      let html = "<ul>";
-      names.forEach((name, idx) => {
-        html += `<li>${name} <button onclick="deleteBabyName(${idx})">Delete</button></li>`;
-      });
-      html += "</ul>";
-      list.innerHTML = html;
+    function saveNote() {
+      const input = document.getElementById('note-input');
+      const v = input.value.trim(); if(!v)return;
+      const arr = JSON.parse(localStorage.getItem('angelinaNotes')||'[]');
+      arr.push({text:v,date:new Date().toLocaleDateString()});
+      localStorage.setItem('angelinaNotes', JSON.stringify(arr));
+      input.value=''; renderList('angelinaNotes','note-list',(n,i)=>`<li><strong>${n.date}:</strong> ${n.text}<button onclick="delItem('angelinaNotes','note-list',${i})">Delete</button></li>`);
     }
 
-    function deleteBabyName(index) {
-      const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
-      names.splice(index, 1);
-      localStorage.setItem('babyNames', JSON.stringify(names));
-      renderNames();
+    function delItem(key, containerId, index) {
+      const arr = JSON.parse(localStorage.getItem(key)||'[]');
+      arr.splice(index,1);
+      localStorage.setItem(key, JSON.stringify(arr));
+      renderList(key,containerId, key==='angelinaNotes'
+        ? (n,i)=>`<li><strong>${n.date}:</strong> ${n.text}<button onclick="delItem('${key}','${containerId}',${i})">Delete</button></li>`
+        : (n,i)=>`<li>${n}<button onclick="delItem('${key}','${containerId}',${i})">Delete</button></li>`
+      );
     }
 
-    // Initial Load
     window.onload = () => {
-      renderNotes();
-      renderNames();
-    };
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-        .then(() => console.log('Service Worker Registered'));
+      renderList('babyNames','baby-names-list',(n,i)=>`<li>${n}<button onclick="delItem('babyNames','baby-names-list',${i})">Delete</button></li>`);
+      renderList('angelinaNotes','note-list',(n,i)=>`<li><strong>${n.date}:</strong> ${n.text}<button onclick="delItem('angelinaNotes','note-list',${i})">Delete</button></li>`);
+      if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(console.error);
+      }
     }
   </script>
 </body>
