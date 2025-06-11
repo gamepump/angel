@@ -118,13 +118,7 @@
 </head>
 <body>
     <h1>🌺 Hussam & Angelina's Love Sanctuary 🌺</h1>
-    
-    <!-- Pregnancy Countdown -->
-    <section id="pregnancy-countdown">
-        <h2>👶 Our Baby's Journey</h2>
-        <p id="countdown"></p>
-        <p id="baby-size"></p>
-    </section>
+
 
     <!-- Mood Tracker -->
     <section id="mood-tracker">
@@ -171,72 +165,22 @@
     <!-- Install as App Button -->
     <button id="install-btn" style="display: none;">📲 Install as App</button>
 
-    <script>
-        // ===== PREGNANCY COUNTDOWN =====
-        const dueDate = new Date('2024-12-15');
-        const startDate = new Date('2024-03-12');
-        
-        function updatePregnancyCountdown() {
-            const today = new Date();
-            const msPerDay = 1000 * 60 * 60 * 24;
-            const daysPassed = Math.floor((today - startDate) / msPerDay);
-            const weeks = Math.floor(daysPassed / 7);
-            const days = daysPassed % 7;
-            
-            const daysLeft = Math.floor((duedate - today) / msPerDay);
-            const weeksLeft = Math.floor(daysLeft / 7);
-            const remainingDays = daysLeft % 7;
-            
-            const progressPercent = Math.min(100, (weeks / 40 * 100)).toFixed(1);
-            
-            document.getElementById('countdown').innerHTML = `
-                <strong>${weeks} weeks & ${days} days</strong> along<br>
-                <strong>${weeksLeft} weeks & ${remainingDays} days</strong> to go!<br>
-                <div class="progress-bar">
-                    <div class="progress" style="width: ${progressPercent}%"></div>
-                    <span>${progressPercent}%</span>
-                </div>
-            `;
-            
-            const babyMilestones = [
-                { week: 13, size: "a peach 🍑", desc: "Baby's tiny fingerprints are forming!" },
-                { week: 16, size: "an avocado 🥑", desc: "Baby can hear your voice now." },
-                { week: 20, size: "a banana 🍌", desc: "Halfway there, my love!" },
-                { week: 24, size: "an ear of corn 🌽", desc: "Baby reacts to your touch." },
-                { week: 28, size: "an eggplant 🍆", desc: "Eyes can blink now!" },
-                { week: 32, size: "a squash 🎃", desc: "Baby dreams in the womb." },
-                { week: 36, size: "a honeydew 🍈", desc: "Almost ready to meet us!" },
-                { week: 40, size: "a watermelon 🍉", desc: "Happy due date!" }
-            ];
-            
-            let currentSize = "a peach 🍑";
-            let currentDesc = "Baby's tiny fingerprints are forming!";
-            for (const milestone of babyMilestones) {
-                if (weeks >= milestone.week) {
-                    currentSize = milestone.size;
-                    currentDesc = milestone.desc;
-                }
-            }
-            document.getElementById('baby-size').innerHTML = `
-                This week, our baby is the size of <strong>${currentSize}</strong>!<br>
-                <small>✨ ${currentDesc}</small>
-            `;
-        }
-        updatePregnancyCountdown();
-        setInterval(updatePregnancyCountdown, 86400000);
-
+ 
         // ===== MOOD TRACKER =====
         function logMood(mood) {
             const responses = {
                 happy: [
                     "That smile of yours could power the sun. Keep glowing! ☀️",
                     "Tell me what's making you happy—I want to savor this moment with you.",
-                    "You're my favorite reason to celebrate. 🎉"
+                    "You're my favorite reason to celebrate. 🎉",
+    "Always be happy my beautiful angel"
+    
                 ],
                 tired: [
                     "Let me draw you a bath tonight. You deserve it, habibti. 🛁",
                     "I'll handle everything today. Just rest and grow our baby. 💤",
-                    "Foot rub + your favorite show? Say the word. 👣"
+                    "Foot rub + your favorite show? Say the word. 👣",
+    "Theodore is tired too 😄"
                 ],
                 emotional: [
                     "Your tears are sacred. I'm here to hold them and you. 🤗",
@@ -262,6 +206,7 @@
             "However you feel today, I'm here—no conditions.",
             "I'll never stop cherishing the way you laugh.",
             "You're the strongest person I know.",
+    "Did you know that Alex is Haywan?",
             "Thank you for carrying our baby so beautifully."
         ];
         function newAffirmation() {
@@ -273,14 +218,15 @@
         function showRandomLove() {
             const messages = [
                 "I whispered your name in my prayers today.",
+    "Ya xate ti, only little",
                 "You're the strongest woman I know—carrying our child like a warrior.",
-                "Remember when we slow-danced in the kitchen? Let's do that tonight.",
+                "Remember when we slow-danced in UAE? Let's do that tonight.",
                 "I'd choose you in every lifetime.",
                 "Your laugh is my favorite melody.",
-                "I packed your favorite snack for later. Check the fridge. 🍓",
+        
                 "You're already the perfect mother to our baby.",
-                "I fell in love with you all over again today.",
-                "Let's name our baby after something that reminds me of you.",
+                "I fell in love with you all over again every day.",
+        "Theodore misses you.... me too!!",
                 "Even on your worst days, you're still my dream come true."
             ];
             const randomMsg = messages[Math.floor(Math.random() * messages.length)];
