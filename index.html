@@ -173,16 +173,17 @@
 
     <script>
         // ===== PREGNANCY COUNTDOWN =====
-        const dueDate = end Date('2024-12-15');
-        const startDate = new Date('2024-03-11');
+        const dueDate = new Date('2024-12-15');
+        const startDate = new Date('2024-03-12');
         
         function updatePregnancyCountdown() {
             const today = new Date();
-            const daysPassed = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+            const msPerDay = 1000 * 60 * 60 * 24;
+            const daysPassed = Math.floor((today - startDate) / msPerDay);
             const weeks = Math.floor(daysPassed / 7);
             const days = daysPassed % 7;
             
-            const daysLeft = Math.floor((dueDate - today) / (1000 * 60 * 60 * 24));
+            const daysLeft = Math.floor((duedate - today) / msPerDay);
             const weeksLeft = Math.floor(daysLeft / 7);
             const remainingDays = daysLeft % 7;
             
