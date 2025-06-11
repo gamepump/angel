@@ -1,279 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Angelina 🌸</title>
-    <meta name="theme-color" content="#ffd6e0">
-    <style>
-        :root {
-            --pink: #ffd6e0;
-            --dark-pink: #ff8fab;
-            --white: #fff;
-            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        body {
-            font-family: 'Arial', sans-serif;
-            background: var(--pink);
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        h1, h2 { 
-            color: #c9184a; 
-            text-align: center;
-        }
-        section {
-            background: var(--white);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: var(--shadow);
-        }
-        .button-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-        }
-        button {
-            background: var(--dark-pink);
-            color: var(--white);
-            border: none;
-            padding: 12px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-        button:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
-        }
-        #mood-response, #random-message, #affirmation-text {
-            padding: 15px;
-            margin-top: 15px;
-            background-color: #ffe5ec;
-            border-radius: 10px;
-            text-align: center;
-            font-style: italic;
-            color: #c9184a;
-        }
-        textarea, input {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        #baby-names-list {
-            list-style: none;
-            padding: 0;
-        }
-        #baby-names-list li {
-            background: var(--pink);
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        #notes-display {
-            margin-top: 15px;
-            padding: 15px;
-            background-color: #ffe5ec;
-            border-radius: 10px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Angelina's Love Sanctuary 💗</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#ff8fab"/>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #ffd6e0;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #c9184a;
+    }
+
+    section {
+      background: #fff;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      background: #ff8fab;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
+    textarea, input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    #output, #note-list {
+      background: #ffe5ec;
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 10px;
+      color: #c9184a;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul li {
+      padding: 10px;
+      background: #ffd6e0;
+      margin: 5px 0;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    ul li button {
+      background: #c9184a;
+      font-size: 12px;
+      padding: 4px 8px;
+    }
+  </style>
 </head>
 <body>
-    <h1>🌺 Hussam & Angelina's Love Sanctuary 🌺</h1>
+  <h1>💌 For My Angelina 💌</h1>
 
-    <!-- Mood Tracker -->
-    <section id="mood-tracker">
-        <h2>🌈 How Are You Feeling Today, Angelina?</h2>
-        <div class="button-container">
-            <button onclick="logMood('happy')">😊 Happy</button>
-            <button onclick="logMood('tired')">😴 Tired</button>
-            <button onclick="logMood('emotional')">🥺 Emotional</button>
-            <button onclick="logMood('excited')">🎉 Excited</button>
-        </div>
-        <div id="mood-response"></div>
-    </section>
+  <!-- Surprise Message -->
+  <section>
+    <h2>💕 A Message From Hussam</h2>
+    <div class="button-container">
+      <button onclick="showMessage()">Show Me Love</button>
+    </div>
+    <div id="output"></div>
+  </section>
 
-    <!-- Daily Affirmation -->
-    <section id="daily-affirmation">
-        <h2>🌹 Hussam's Daily Affirmation</h2>
-        <div id="affirmation-text">"You're already the perfect mother to our baby."</div>
-        <div class="button-container">
-            <button onclick="newAffirmation()">Another One ➡️</button>
-        </div>
-    </section>
+  <!-- Journal Notes -->
+  <section>
+    <h2>📝 Our Journal</h2>
+    <textarea id="note-input" placeholder="Write a special note..." rows="4"></textarea>
+    <div class="button-container">
+      <button onclick="saveNote()">Save Note</button>
+    </div>
+    <div id="note-list"></div>
+  </section>
 
-    <!-- Surprise Button -->
-    <section>
-        <h2>💖 Click for a Surprise from Hussam</h2>
-        <div class="button-container">
-            <button onclick="showRandomLove()">Open Love Jar 💌</button>
-        </div>
-        <div id="random-message"></div>
-    </section>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script>
+    const messages = [
+      "I whispered your name in my prayers today.",
+      "Ya xate ti, only little.",
+      "You're the strongest woman I know—carrying our child like a warrior.",
+      "Remember when we slow-danced in UAE? Let's do that tonight.",
+      "I'd choose you in every lifetime.",
+      "Your laugh is my favorite melody.",
+      "You're already the perfect mother to our baby.",
+      "I fell in love with you all over again every day.",
+      "Theodore misses you.... me too!!",
+      "Even on your worst days, you're still my dream come true."
+    ];
 
-    <!-- Shared Notes -->
-    <section id="shared-notes">
-        <h2>📝 Our Private Journal</h2>
-        <textarea id="note-input" placeholder="Write a note for each other..." rows="4"></textarea>
-        <div class="button-container">
-            <button onclick="saveNote()">Save Note</button>
-        </div>
-        <div id="notes-display"></div>
-    </section>
+    function showMessage() {
+      const msg = messages[Math.floor(Math.random() * messages.length)];
+      document.getElementById('output').textContent = msg;
+      confetti({ particleCount: 80, spread: 70 });
+    }
 
-    <!-- Baby Names Ideas -->
-    <section id="baby-names">
-        <h2>👶 Baby Names We Love</h2>
-        <input type="text" id="name-input" placeholder="Add a name...">
-        <div class="button-container">
-            <button onclick="addBabyName()">Add Name</button>
-        </div>
-        <ul id="baby-names-list"></ul>
-    </section>
+    function saveNote() {
+      const text = document.getElementById('note-input').value.trim();
+      if (!text) return;
 
-    <script>
-        // Mood Tracker
-        function logMood(mood) {
-            const responses = {
-                happy: [
-                    "That smile of yours could power the sun. Keep glowing! ☀️",
-                    "Tell me what's making you happy—I want to savor this moment with you.",
-                    "You're my favorite reason to celebrate. 🎉",
-                    "Always be happy my beautiful angel"
-                ],
-                tired: [
-                    "Let me draw you a bath tonight. You deserve it, habibti. 🛁",
-                    "I'll handle everything today. Just rest and grow our baby. 💤",
-                    "Foot rub + your favorite show? Say the word. 👣",
-                    "Theodore misses you.... me too!!"
-                ],
-                emotional: [
-                    "Your tears are sacred. I'm here to hold them and you. 🤗",
-                    "Let's cuddle and talk—or just sit in silence. I'm here.",
-                    "Pregnancy hormones are no joke. You're doing amazing."
-                ],
-                excited: [
-                    "Your excitement is my favorite sound! Tell me all about it. 😄",
-                    "We're one step closer to holding our little one! 🎊",
-                    "I love seeing you light up like this. What's on your mind?"
-                ]
-            };
-            const randomResponse = responses[mood][Math.floor(Math.random() * responses[mood].length)];
-            document.getElementById('mood-response').innerHTML = `<strong>Hussam says:</strong> ${randomResponse}`;
-        }
+      const notes = JSON.parse(localStorage.getItem('angelinaNotes') || '[]');
+      notes.push({ text, date: new Date().toLocaleDateString() });
+      localStorage.setItem('angelinaNotes', JSON.stringify(notes));
+      document.getElementById('note-input').value = '';
+      renderNotes();
+    }
 
-        // Daily Affirmations
-        const affirmations = [
-            "I'm so proud to be your partner in this journey.",
-            "You're my greatest adventure.",
-            "However you feel today, I'm here—no conditions.",
-            "I'll never stop cherishing the way you laugh.",
-            "You're the strongest person I know.",
-            "Did you know that Alex is Haywan?",
-            "Thank you for carrying our baby so beautifully."
-        ];
+    function deleteNote(index) {
+      const notes = JSON.parse(localStorage.getItem('angelinaNotes') || '[]');
+      notes.splice(index, 1);
+      localStorage.setItem('angelinaNotes', JSON.stringify(notes));
+      renderNotes();
+    }
 
-        function newAffirmation() {
-            const randomAffirmation = affirmations[Math.floor(Math.random() * affirmations.length)];
-            document.getElementById('affirmation-text').textContent = `"${randomAffirmation}"`;
-        }
+    function renderNotes() {
+      const notes = JSON.parse(localStorage.getItem('angelinaNotes') || '[]');
+      const list = document.getElementById('note-list');
+      if (!notes.length) {
+        list.innerHTML = "<p>No notes yet.</p>";
+        return;
+      }
 
-        // Surprise Button
-        function showRandomLove() {
-            const messages = [
-                "I whispered your name in my prayers today.",
-                "Ya xate ti, only little",
-                "You're the strongest woman I know—carrying our child like a warrior.",
-                "Remember when we slow-danced in UAE? Let's do that tonight.",
-                "I'd choose you in every lifetime.",
-                "Your laugh is my favorite melody.",
-                "You're already the perfect mother to our baby.",
-                "I fell in love with you all over again every day.",
-                "Theodore misses you.... me too!!",
-                "Even on your worst days, you're still my dream come true."
-            ];
-            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
-            document.getElementById('random-message').textContent = randomMsg;
+      let html = "<ul>";
+      notes.forEach((note, idx) => {
+        html += `<li><span><strong>${note.date}:</strong> ${note.text}</span> <button onclick="deleteNote(${idx})">Delete</button></li>`;
+      });
+      html += "</ul>";
+      list.innerHTML = html;
+    }
 
-            if (typeof confetti === 'function') {
-                confetti({ particleCount: 100, spread: 70 });
-            }
-        }
+    window.onload = renderNotes;
 
-        // Shared Notes
-        function saveNote() {
-            const note = document.getElementById('note-input').value.trim();
-            if (!note) return;
-
-            let notes = JSON.parse(localStorage.getItem('loveNotes') || '[]');
-            notes.push({
-                text: note,
-                date: new Date().toLocaleDateString()
-            });
-            localStorage.setItem('loveNotes', JSON.stringify(notes));
-            displayNotes();
-            document.getElementById('note-input').value = '';
-        }
-
-        function displayNotes() {
-            const notes = JSON.parse(localStorage.getItem('loveNotes') || '[]');
-            let html = '';
-            notes.forEach(note => {
-                html += `<p><strong>${note.date}:</strong> ${note.text}</p>`;
-            });
-            document.getElementById('notes-display').innerHTML = html || '<p>No notes yet</p>';
-        }
-
-        // Baby Names
-        function addBabyName() {
-            const nameInput = document.getElementById('name-input');
-            const name = nameInput.value.trim();
-            if (!name) return;
-
-            let names = JSON.parse(localStorage.getItem('babyNames') || '[]');
-            names.push(name);
-            localStorage.setItem('babyNames', JSON.stringify(names));
-            nameInput.value = '';
-            displayBabyNames();
-        }
-
-        function displayBabyNames() {
-            const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
-            const list = document.getElementById('baby-names-list');
-            list.innerHTML = '';
-            names.forEach((name, index) => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    ${name}
-                    <button onclick="removeBabyName(${index})" style="background:#ff8fab; color:#fff; border:none; padding:5px 10px; border-radius:15px; cursor:pointer;">Remove</button>
-                `;
-                list.appendChild(li);
-            });
-        }
-
-        function removeBabyName(index) {
-            let names = JSON.parse(localStorage.getItem('babyNames') || '[]');
-            names.splice(index, 1);
-            localStorage.setItem('babyNames', JSON.stringify(names));
-            displayBabyNames();
-        }
-
-        // Load saved notes and names on page load
-        window.onload = function () {
-            displayNotes();
-            displayBabyNames();
-        };
-    </script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(() => console.log('Service Worker Registered'));
+    }
+  </script>
 </body>
 </html>
