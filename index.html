@@ -119,7 +119,6 @@
 <body>
     <h1>🌺 Hussam & Angelina's Love Sanctuary 🌺</h1>
 
-
     <!-- Mood Tracker -->
     <section id="mood-tracker">
         <h2>🌈 How Are You Feeling Today, Angelina?</h2>
@@ -165,7 +164,7 @@
     <!-- Install as App Button -->
     <button id="install-btn" style="display: none;">📲 Install as App</button>
 
- 
+    <script>
         // ===== MOOD TRACKER =====
         function logMood(mood) {
             const responses = {
@@ -173,14 +172,13 @@
                     "That smile of yours could power the sun. Keep glowing! ☀️",
                     "Tell me what's making you happy—I want to savor this moment with you.",
                     "You're my favorite reason to celebrate. 🎉",
-    "Always be happy my beautiful angel"
-    
+                    "Always be happy my beautiful angel"
                 ],
                 tired: [
                     "Let me draw you a bath tonight. You deserve it, habibti. 🛁",
                     "I'll handle everything today. Just rest and grow our baby. 💤",
                     "Foot rub + your favorite show? Say the word. 👣",
-    "Theodore is tired too 😄"
+                    "Theodore misses you.... me too!!"
                 ],
                 emotional: [
                     "Your tears are sacred. I'm here to hold them and you. 🤗",
@@ -206,7 +204,7 @@
             "However you feel today, I'm here—no conditions.",
             "I'll never stop cherishing the way you laugh.",
             "You're the strongest person I know.",
-    "Did you know that Alex is Haywan?",
+            "Did you know that Alex is Haywan?",
             "Thank you for carrying our baby so beautifully."
         ];
         function newAffirmation() {
@@ -218,15 +216,14 @@
         function showRandomLove() {
             const messages = [
                 "I whispered your name in my prayers today.",
-    "Ya xate ti, only little",
+                "Ya xate ti, only little",
                 "You're the strongest woman I know—carrying our child like a warrior.",
                 "Remember when we slow-danced in UAE? Let's do that tonight.",
                 "I'd choose you in every lifetime.",
                 "Your laugh is my favorite melody.",
-        
                 "You're already the perfect mother to our baby.",
                 "I fell in love with you all over again every day.",
-        "Theodore misses you.... me too!!",
+                "Theodore misses you.... me too!!",
                 "Even on your worst days, you're still my dream come true."
             ];
             const randomMsg = messages[Math.floor(Math.random() * messages.length)];
