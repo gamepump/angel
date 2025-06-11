@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For My Angelina 🌸</title>
-    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#ffd6e0">
+    <link rel="manifest" href="manifest.json">
     <style>
         :root {
             --pink: #ffd6e0;
@@ -21,7 +22,7 @@
             max-width: 800px;
             margin: 0 auto;
         }
-        h1, h2 { color: #c9184a; }
+        h1, h2 { color: #c9184a; text-align: center; }
         section {
             background: var(--white);
             border-radius: 15px;
@@ -38,13 +39,9 @@
             cursor: pointer;
             font-size: 16px;
             margin: 5px;
+            transition: opacity 0.3s;
         }
         button:hover { opacity: 0.9; }
-        #random-message {
-            font-style: italic;
-            margin: 10px 0;
-            color: #c9184a;
-        }
         .emoji-btn { font-size: 20px; }
         textarea, input {
             width: 100%;
@@ -64,6 +61,34 @@
             border-radius: 5px;
             display: flex;
             justify-content: space-between;
+        }
+        .progress-bar {
+            width: 100%;
+            background: #ffe5ec;
+            border-radius: 10px;
+            margin: 10px 0;
+            position: relative;
+            height: 20px;
+        }
+        .progress {
+            height: 100%;
+            background: #ff8fab;
+            border-radius: 10px;
+            transition: width 0.5s;
+        }
+        .progress-bar span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-weight: bold;
+        }
+        #random-message, #affirmation-text {
+            font-style: italic;
+            margin: 10px 0;
+            color: #c9184a;
+            min-height: 20px;
         }
     </style>
 </head>
@@ -87,6 +112,13 @@
             <button class="emoji-btn" onclick="logMood('excited')">🎉 Excited</button>
         </div>
         <div id="mood-response"></div>
+    </section>
+
+    <!-- Daily Affirmation -->
+    <section id="daily-affirmation">
+        <h2>🌹 Hussam’s Daily Affirmation</h2>
+        <div id="affirmation-text">"You’re already the perfect mother to our baby."</div>
+        <button onclick="newAffirmation()">Another One ➡️</button>
     </section>
 
     <!-- Surprise Button -->
@@ -117,11 +149,12 @@
 
     <script>
         // ===== PREGNANCY COUNTDOWN =====
-        const dueDate = new Date('2024-12-15'); // UPDATE THIS TO YOUR DUE DATE
-        const startDate = new Date('2024-03-20'); // Angelina's Week 12 + 2 days (adjust as needed)
+        const dueDate = new Date('2024-12-15'); // 👈 UPDATE TO YOUR DUE DATE
+        const startDate = new Date('2024-03-27'); // 👈 13 weeks ago (adjust as needed)
         
         function updatePregnancyCountdown() {
             const today = new Date();
+            const totalDays = Math.floor((dueDate - startDate) / (1000 * 60 * 60 * 24));
             const daysPassed = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
             const weeks = Math.floor(daysPassed / 7);
             const days = daysPassed % 7;
@@ -130,23 +163,42 @@
             const weeksLeft = Math.floor(daysLeft / 7);
             const remainingDays = daysLeft % 7;
             
+            // Progress bar
+            const progressPercent = Math.min(100, (daysPassed / totalDays * 100)).toFixed(1);
+            
             document.getElementById('countdown').innerHTML = `
                 <strong>${weeks} weeks & ${days} days</strong> along<br>
-                <strong>${weeksLeft} weeks & ${remainingDays} days</strong> until we meet our baby!
+                <strong>${weeksLeft} weeks & ${remainingDays} days</strong> to go!<br>
+                <div class="progress-bar">
+                    <div class="progress" style="width: ${progressPercent}%"></div>
+                    <span>${progressPercent}%</span>
+                </div>
             `;
             
-            // Baby size comparison (simplified)
-            const babySizes = [
-                { week: 12, size: "a plum" }, { week: 16, size: "an avocado" },
-                { week: 20, size: "a banana" }, { week: 24, size: "an eggplant" },
-                { week: 28, size: "a squash" }, { week: 32, size: "a pineapple" },
-                { week: 36, size: "a honeydew" }, { week: 40, size: "a watermelon" }
+            // Baby size + fun facts
+            const babyMilestones = [
+                { week: 13, size: "a peach 🍑", desc: "Baby’s tiny fingerprints are forming!" },
+                { week: 16, size: "an avocado 🥑", desc: "Baby can hear your voice now." },
+                { week: 20, size: "a banana 🍌", desc: "Halfway there, my love!" },
+                { week: 24, size: "an ear of corn 🌽", desc: "Baby reacts to your touch." },
+                { week: 28, size: "an eggplant 🍆", desc: "Eyes can blink now!" },
+                { week: 32, size: "a squash 🎃", desc: "Baby dreams in the womb." },
+                { week: 36, size: "a honeydew 🍈", desc: "Almost ready to meet us!" },
+                { week: 40, size: "a watermelon 🍉", desc: "Happy due date!" }
             ];
+            
             let currentSize = "a blueberry";
-            for (const size of babySizes) {
-                if (weeks >= size.week) currentSize = size.size;
+            let currentDesc = "Growing stronger every day!";
+            for (const milestone of babyMilestones) {
+                if (weeks >= milestone.week) {
+                    currentSize = milestone.size;
+                    currentDesc = milestone.desc;
+                }
             }
-            document.getElementById('baby-size').innerHTML = `This week, our baby is the size of <strong>${currentSize}</strong>!`;
+            document.getElementById('baby-size').innerHTML = `
+                This week, our baby is the size of <strong>${currentSize}</strong>!<br>
+                <small>✨ ${currentDesc}</small>
+            `;
         }
         updatePregnancyCountdown();
         setInterval(updatePregnancyCountdown, 86400000); // Update daily
@@ -154,31 +206,67 @@
         // ===== MOOD TRACKER =====
         function logMood(mood) {
             const responses = {
-                happy: "I love seeing you happy, habibti! Keep shining. 🌟",
-                tired: "You’re doing amazing. Rest whenever you need—I’ve got you. 💤",
-                emotional: "Your feelings are valid. I’m here to hold you through it all. 🤗",
-                excited: "Your excitement makes my heart soar! We’re in this together. 🎯"
+                happy: [
+                    "That smile of yours could power the sun. Keep glowing! ☀️",
+                    "Tell me what’s making you happy—I want to savor this moment with you.",
+                    "You’re my favorite reason to celebrate. 🎉"
+                ],
+                tired: [
+                    "Let me draw you a bath tonight. You deserve it, habibti. 🛁",
+                    "I’ll handle everything today. Just rest and grow our baby. 💤",
+                    "Foot rub + your favorite show? Say the word. 👣"
+                ],
+                emotional: [
+                    "Your tears are sacred. I’m here to hold them and you. 🤗",
+                    "Let’s cuddle and talk—or just sit in silence. I’m here.",
+                    "Pregnancy hormones are no joke. You’re doing amazing."
+                ],
+                excited: [
+                    "Your excitement is my favorite sound! Tell me all about it. 😄",
+                    "We’re one step closer to holding our little one! 🎊",
+                    "I love seeing you light up like this. What’s on your mind?"
+                ]
             };
+            const randomResponse = responses[mood][Math.floor(Math.random() * responses[mood].length)];
             document.getElementById('mood-response').innerHTML = `
-                <p><strong>Hussam says:</strong> ${responses[mood]}</p>
+                <p><strong>Hussam says:</strong> ${randomResponse}</p>
             `;
+        }
+
+        // ===== DAILY AFFIRMATIONS =====
+        const affirmations = [
+            "I’m so proud to be your partner in this journey.",
+            "You’re my greatest adventure.",
+            "However you feel today, I’m here—no conditions.",
+            "I’ll never stop cherishing the way you laugh.",
+            "You’re the strongest person I know.",
+            "Thank you for carrying our baby so beautifully."
+        ];
+        function newAffirmation() {
+            const randomAffirmation = affirmations[Math.floor(Math.random() * affirmations.length)];
+            document.getElementById('affirmation-text').innerHTML = `"${randomAffirmation}"`;
         }
 
         // ===== SURPRISE BUTTON =====
         function showRandomLove() {
             const messages = [
+                "I whispered your name in my prayers today.",
+                "You’re the strongest woman I know—carrying our child like a warrior.",
+                "Remember when we slow-danced in the kitchen? Let’s do that tonight.",
+                "I’d choose you in every lifetime.",
+                "Your laugh is my favorite melody.",
+                "I packed your favorite snack for later. Check the fridge. 🍓",
+                "You’re already the perfect mother to our baby.",
                 "I fell in love with you all over again today.",
-                "Our baby is lucky to have you as their mom.",
-                "Remember our first date? I knew you were the one.",
-                "You’re my greatest adventure.",
-                "I’ll always rub your feet when you’re tired—promise."
+                "Let’s name our baby after something that reminds me of you.",
+                "Even on your worst days, you’re still my dream come true."
             ];
             const randomMsg = messages[Math.floor(Math.random() * messages.length)];
             document.getElementById('random-message').textContent = randomMsg;
             
-            // Bonus: Confetti effect!
+            // Confetti effect!
             if (typeof confetti === 'function') {
-                confetti({ particleCount: 100, spread: 70 });
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
             }
         }
 
@@ -192,7 +280,6 @@
             displayNotes();
             document.getElementById('note-input').value = '';
         }
-
         function displayNotes() {
             const notes = JSON.parse(localStorage.getItem('loveNotes') || '[]');
             let html = '';
@@ -213,7 +300,6 @@
             displayBabyNames();
             document.getElementById('name-input').value = '';
         }
-
         function displayBabyNames() {
             const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
             let html = '';
@@ -222,7 +308,6 @@
             });
             document.getElementById('baby-names-list').innerHTML = html;
         }
-
         function removeName(name) {
             let names = JSON.parse(localStorage.getItem('babyNames') || '[]');
             names = names.filter(n => n !== name);
@@ -238,23 +323,24 @@
             deferredPrompt = e;
             document.getElementById('install-btn').style.display = 'block';
         });
-
         document.getElementById('install-btn').addEventListener('click', () => {
             deferredPrompt.prompt();
             deferredPrompt.userChoice.then(() => {
                 deferredPrompt = null;
             });
         });
-    </script>
 
-    <!-- Confetti.js for surprises (optional) -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-
-    <!-- Manifest for PWA -->
-    <script>
+        // ===== SERVICE WORKER REGISTRATION =====
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js');
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => console.log('SW registered!'))
+                    .catch(err => console.log('SW registration failed: ', err));
+            });
         }
     </script>
+
+    <!-- Confetti.js (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
 </html>
