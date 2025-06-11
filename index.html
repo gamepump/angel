@@ -149,8 +149,8 @@
 
     <script>
         // ===== PREGNANCY COUNTDOWN =====
-        const dueDate = new Date('2024-12-15'); // 👈 UPDATE TO YOUR DUE DATE
-        const startDate = new Date('2024-03-11'); // 👈 Updated to make it exactly 13 weeks on June 11th
+        const dueDate = new Date('2024-12-15'); // Due date remains December 15
+        const startDate = new Date('2024-03-11'); // 13 weeks before June 11 is March 11
         
         function updatePregnancyCountdown() {
             const today = new Date();
@@ -163,8 +163,8 @@
             const weeksLeft = Math.floor(daysLeft / 7);
             const remainingDays = daysLeft % 7;
             
-            // Progress bar
-            const progressPercent = Math.min(100, (daysPassed / totalDays * 100)).toFixed(1);
+            // Progress bar - calculate percentage based on 40 week pregnancy
+            const progressPercent = Math.min(100, (weeks / 40 * 100)).toFixed(1);
             
             document.getElementById('countdown').innerHTML = `
                 <strong>${weeks} weeks & ${days} days</strong> along<br>
