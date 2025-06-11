@@ -4,6 +4,90 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Angelina's Love Sanctuary 💗</title>
+  <meta name="theme-color" content="#ff8fab" />
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    /* Your same CSS from before here (not repeated for brevity) */
+  </style>
+</head>
+<body>
+  <h1>💌 Angelina’s Love Sanctuary</h1>
+
+  <!-- Love Notes -->
+  <section>
+    <h2>💖 Love Notes</h2>
+    <textarea id="note-input" placeholder="Write something sweet..." rows="4"></textarea>
+    <div class="btns">
+      <button onclick="saveNote()">Save Note</button>
+    </div>
+    <div id="note-list"></div>
+  </section>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+
+  <script>
+    // 🔥 Replace this config with your actual one from Firebase Console
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "angelinalovehuss.firebaseapp.com",
+      projectId: "angelinalovehuss",
+      storageBucket: "angelinalovehuss.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    // Sign in anonymously
+    auth.signInAnonymously().catch(err => console.error(err));
+
+    // Save Note
+    function saveNote() {
+      const note = document.getElementById('note-input').value.trim();
+      if (!note) return;
+      db.collection("notes").add({
+        text: note,
+        date: new Date().toLocaleString()
+      }).then(() => {
+        document.getElementById('note-input').value = '';
+      });
+    }
+
+    // Render Notes Live
+    function renderNotes() {
+      db.collection("notes").orderBy("date", "desc").onSnapshot(snapshot => {
+        const list = document.getElementById('note-list');
+        if (snapshot.empty) {
+          list.innerHTML = "<p>No notes yet.</p>";
+          return;
+        }
+        let html = "<ul>";
+        snapshot.forEach(doc => {
+          const note = doc.data();
+          html += `<li><strong>${note.date}:</strong> ${note.text}</li>`;
+        });
+        html += "</ul>";
+        list.innerHTML = html;
+      });
+    }
+
+    window.onload = renderNotes;
+  </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Angelina's Love Sanctuary 💗</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#ff8fab" />
   <style>
