@@ -217,7 +217,7 @@
             const note = document.getElementById('note-input').value.trim();
             if (!note) return;
             
-            let notes = JSON.parse(localStorage.getItem('loveNotes') || [];
+            let notes = JSON.parse(localStorage.getItem('loveNotes') || '[]');
             notes.push({
                 text: note,
                 date: new Date().toLocaleDateString()
@@ -241,39 +241,4 @@
             const name = document.getElementById('name-input').value.trim();
             if (!name) return;
             
-            let names = JSON.parse(localStorage.getItem('babyNames') || []);
-            if (!names.includes(name)) {
-                names.push(name);
-                localStorage.setItem('babyNames', JSON.stringify(names));
-                displayBabyNames();
-                document.getElementById('name-input').value = '';
-            }
-        }
-
-        function displayBabyNames() {
-            const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
-            let html = '';
-            names.forEach(name => {
-                html += `<li>${name} <button onclick="removeName('${name.replace(/'/g, "\\'")}')">❌</button></li>`;
-            });
-            document.getElementById('baby-names-list').innerHTML = html || '<li>No names added yet</li>';
-        }
-
-        function removeName(name) {
-            let names = JSON.parse(localStorage.getItem('babyNames') || []);
-            names = names.filter(n => n !== name);
-            localStorage.setItem('babyNames', JSON.stringify(names));
-            displayBabyNames();
-        }
-
-        // Initialize on load
-        document.addEventListener('DOMContentLoaded', () => {
-            displayNotes();
-            displayBabyNames();
-        });
-    </script>
-
-    <!-- Confetti.js -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-</body>
-</html>
+            let names = JSON.parse(local
