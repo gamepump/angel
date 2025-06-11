@@ -5,16 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For My Angelina 🌸</title>
     <meta name="theme-color" content="#ffd6e0">
-    <link rel="manifest" href="manifest.json">
     <style>
         :root {
             --pink: #ffd6e0;
             --dark-pink: #ff8fab;
             --white: #fff;
             --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        * {
-            box-sizing: border-box;
         }
         body {
             font-family: 'Arial', sans-serif;
@@ -24,14 +20,10 @@
             padding: 20px;
             max-width: 800px;
             margin: 0 auto;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
         }
         h1, h2 { 
             color: #c9184a; 
             text-align: center;
-            word-wrap: break-word;
         }
         section {
             background: var(--white);
@@ -39,33 +31,35 @@
             padding: 20px;
             margin: 20px 0;
             box-shadow: var(--shadow);
-            width: 100%;
         }
         .button-container {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
             gap: 10px;
+            justify-content: center;
         }
         button {
             background: var(--dark-pink);
             color: var(--white);
             border: none;
-            padding: 12px 24px;
+            padding: 12px 20px;
             border-radius: 50px;
             cursor: pointer;
             font-size: 16px;
             transition: all 0.3s;
-            flex: 1 0 auto;
-            min-width: 120px;
-            max-width: 200px;
         }
-        button:hover { 
+        button:hover {
             opacity: 0.9;
             transform: scale(1.02);
         }
-        .emoji-btn { 
-            font-size: 20px; 
+        #mood-response, #random-message, #affirmation-text {
+            padding: 15px;
+            margin-top: 15px;
+            background-color: #ffe5ec;
+            border-radius: 10px;
+            text-align: center;
+            font-style: italic;
+            color: #c9184a;
         }
         textarea, input {
             width: 100%;
@@ -73,12 +67,10 @@
             margin: 8px 0;
             border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 16px;
         }
         #baby-names-list {
             list-style: none;
             padding: 0;
-            margin: 0;
         }
         #baby-names-list li {
             background: var(--pink);
@@ -89,60 +81,11 @@
             justify-content: space-between;
             align-items: center;
         }
-        #baby-names-list li button {
-            padding: 6px 10px;
-            min-width: auto;
-            max-width: none;
-        }
-        #random-message, #affirmation-text {
-            font-style: italic;
-            margin: 15px 0;
-            color: #c9184a;
-            min-height: 20px;
-            text-align: center;
-            font-size: 18px;
-        }
-        #mood-response {
-            padding: 15px;
-            margin-top: 15px;
-            background-color: #ffe5ec;
-            border-radius: 10px;
-            text-align: center;
-        }
         #notes-display {
             margin-top: 15px;
             padding: 15px;
             background-color: #ffe5ec;
             border-radius: 10px;
-        }
-        #install-btn {
-            display: block;
-            margin: 20px auto;
-            width: 200px;
-            text-align: center;
-        }
-        .hidden {
-            display: none !important;
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 15px;
-            }
-            section {
-                padding: 15px;
-            }
-            button {
-                padding: 10px 15px;
-                font-size: 14px;
-                min-width: 100px;
-            }
-            h1 {
-                font-size: 24px;
-            }
-            h2 {
-                font-size: 20px;
-            }
         }
     </style>
 </head>
@@ -153,10 +96,10 @@
     <section id="mood-tracker">
         <h2>🌈 How Are You Feeling Today, Angelina?</h2>
         <div class="button-container">
-            <button class="emoji-btn" onclick="logMood('happy')">😊 Happy</button>
-            <button class="emoji-btn" onclick="logMood('tired')">😴 Tired</button>
-            <button class="emoji-btn" onclick="logMood('emotional')">🥺 Emotional</button>
-            <button class="emoji-btn" onclick="logMood('excited')">🎉 Excited</button>
+            <button onclick="logMood('happy')">😊 Happy</button>
+            <button onclick="logMood('tired')">😴 Tired</button>
+            <button onclick="logMood('emotional')">🥺 Emotional</button>
+            <button onclick="logMood('excited')">🎉 Excited</button>
         </div>
         <div id="mood-response"></div>
     </section>
@@ -176,7 +119,7 @@
         <div class="button-container">
             <button onclick="showRandomLove()">Open Love Jar 💌</button>
         </div>
-        <p id="random-message"></p>
+        <div id="random-message"></div>
     </section>
 
     <!-- Shared Notes -->
@@ -199,11 +142,8 @@
         <ul id="baby-names-list"></ul>
     </section>
 
-    <!-- Install as App Button -->
-    <button id="install-btn" class="hidden">📲 Install as App</button>
-
     <script>
-        // ===== MOOD TRACKER =====
+        // Mood Tracker
         function logMood(mood) {
             const responses = {
                 happy: [
@@ -230,12 +170,10 @@
                 ]
             };
             const randomResponse = responses[mood][Math.floor(Math.random() * responses[mood].length)];
-            document.getElementById('mood-response').innerHTML = `
-                <p><strong>Hussam says:</strong> ${randomResponse}</p>
-            `;
+            document.getElementById('mood-response').innerHTML = `<strong>Hussam says:</strong> ${randomResponse}`;
         }
 
-        // ===== DAILY AFFIRMATIONS =====
+        // Daily Affirmations
         const affirmations = [
             "I'm so proud to be your partner in this journey.",
             "You're my greatest adventure.",
@@ -251,7 +189,7 @@
             document.getElementById('affirmation-text').textContent = `"${randomAffirmation}"`;
         }
 
-        // ===== SURPRISE BUTTON =====
+        // Surprise Button
         function showRandomLove() {
             const messages = [
                 "I whispered your name in my prayers today.",
@@ -268,127 +206,67 @@
             const randomMsg = messages[Math.floor(Math.random() * messages.length)];
             document.getElementById('random-message').textContent = randomMsg;
             
+            // Load confetti if available
             if (typeof confetti === 'function') {
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                confetti({ particleCount: 100, spread: 70 });
             }
         }
 
-        // ===== SHARED NOTES =====
+        // Shared Notes
         function saveNote() {
-            const note = document.getElementById('note-input').value;
-            if (!note.trim()) return;
+            const note = document.getElementById('note-input').value.trim();
+            if (!note) return;
             
-            try {
-                const notes = JSON.parse(localStorage.getItem('loveNotes') || [];
-                notes.push({ 
-                    text: note, 
-                    date: new Date().toLocaleDateString() 
-                });
-                localStorage.setItem('loveNotes', JSON.stringify(notes));
-                displayNotes();
-                document.getElementById('note-input').value = '';
-            } catch (error) {
-                console.error('Error saving note:', error);
-            }
+            let notes = JSON.parse(localStorage.getItem('loveNotes') || [];
+            notes.push({
+                text: note,
+                date: new Date().toLocaleDateString()
+            });
+            localStorage.setItem('loveNotes', JSON.stringify(notes));
+            displayNotes();
+            document.getElementById('note-input').value = '';
         }
 
         function displayNotes() {
-            try {
-                const notes = JSON.parse(localStorage.getItem('loveNotes') || '[]');
-                let html = '';
-                notes.forEach(note => {
-                    html += `<p><strong>${note.date}:</strong> ${note.text}</p>`;
-                });
-                document.getElementById('notes-display').innerHTML = html || '<p>No notes yet. Write your first note!</p>';
-            } catch (error) {
-                console.error('Error displaying notes:', error);
-            }
+            const notes = JSON.parse(localStorage.getItem('loveNotes') || '[]');
+            let html = '';
+            notes.forEach(note => {
+                html += `<p><strong>${note.date}:</strong> ${note.text}</p>`;
+            });
+            document.getElementById('notes-display').innerHTML = html || '<p>No notes yet</p>';
         }
 
-        // ===== BABY NAMES =====
+        // Baby Names
         function addBabyName() {
-            const nameInput = document.getElementById('name-input');
-            const name = nameInput.value.trim();
-            
+            const name = document.getElementById('name-input').value.trim();
             if (!name) return;
             
-            try {
-                const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
-                if (names.includes(name)) {
-                    alert('This name is already in the list!');
-                    return;
-                }
-                
+            let names = JSON.parse(localStorage.getItem('babyNames') || []);
+            if (!names.includes(name)) {
                 names.push(name);
                 localStorage.setItem('babyNames', JSON.stringify(names));
                 displayBabyNames();
-                nameInput.value = '';
-                nameInput.focus();
-            } catch (error) {
-                console.error('Error adding baby name:', error);
+                document.getElementById('name-input').value = '';
             }
         }
 
         function displayBabyNames() {
-            try {
-                const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
-                let html = '';
-                
-                names.forEach(name => {
-                    // Escape quotes to prevent XSS and ensure proper string handling
-                    const safeName = name.replace(/"/g, '&quot;');
-                    html += `<li>${name} <button onclick="removeName('${safeName}')">❌</button></li>`;
-                });
-                
-                document.getElementById('baby-names-list').innerHTML = html || '<li>No names added yet</li>';
-            } catch (error) {
-                console.error('Error displaying baby names:', error);
-            }
+            const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
+            let html = '';
+            names.forEach(name => {
+                html += `<li>${name} <button onclick="removeName('${name.replace(/'/g, "\\'")}')">❌</button></li>`;
+            });
+            document.getElementById('baby-names-list').innerHTML = html || '<li>No names added yet</li>';
         }
 
         function removeName(name) {
-            try {
-                let names = JSON.parse(localStorage.getItem('babyNames') || '[]');
-                names = names.filter(n => n !== name);
-                localStorage.setItem('babyNames', JSON.stringify(names));
-                displayBabyNames();
-            } catch (error) {
-                console.error('Error removing name:', error);
-            }
+            let names = JSON.parse(localStorage.getItem('babyNames') || []);
+            names = names.filter(n => n !== name);
+            localStorage.setItem('babyNames', JSON.stringify(names));
+            displayBabyNames();
         }
 
-        // ===== PWA INSTALLATION =====
-        let deferredPrompt;
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('install-btn').classList.remove('hidden');
-        });
-
-        document.getElementById('install-btn').addEventListener('click', async () => {
-            if (!deferredPrompt) return;
-            
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`User response to the install prompt: ${outcome}`);
-            deferredPrompt = null;
-        });
-
-        // ===== SERVICE WORKER REGISTRATION =====
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(registration => {
-                        console.log('ServiceWorker registration successful');
-                    })
-                    .catch(err => {
-                        console.log('ServiceWorker registration failed: ', err);
-                    });
-            });
-        }
-
-        // Initialize displays on load
+        // Initialize on load
         document.addEventListener('DOMContentLoaded', () => {
             displayNotes();
             displayBabyNames();
