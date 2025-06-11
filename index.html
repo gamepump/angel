@@ -98,7 +98,6 @@
       <button onclick="logMood('sleepy')">😴 Sleepy</button>
     </div>
     <div id="mood-response"></div>
-    <div id="mood-list"></div>
   </section>
 
   <!-- Pregnancy Tracker -->
@@ -136,14 +135,24 @@
     <div id="output"></div>
   </section>
 
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-
-  <!-- Firebase App (the core Firebase SDK) -->
+  <!-- Firebase SDK -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query, onSnapshot, limit } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      onSnapshot,
+      query,
+      orderBy,
+      deleteDoc,
+      doc,
+      limit,
+      startAfter
+    } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-firestore.js";
 
-    // Your web app's Firebase configuration
+    // Your Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyDWIloLcFrlLTkNBDn0XZsOhpdyATjGDGo",
       authDomain: "angelinalovehuss.firebaseapp.com",
@@ -153,49 +162,13 @@
       appId: "1:776961218617:web:33cdb0340f4c72e61ad5e8"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Mood messages by type
-    const moodMessages = {
-      happy: [
-        "Your joy lights up the world! 🌞",
-        "You're glowing, my angel ✨",
-        "That smile is everything!"
-      ],
-      relaxed: [
-        "Peace looks good on you 🌿",
-        "Breathe deep, you're doing great 🧘",
-        "Enjoy the calm—I'll handle the rest."
-      ],
-      tired: [
-        "Rest, mama Panda 🐻",
-        "You’re growing life—take it slow 💖",
-        "Let me spoil you today.",
-        "Do you want massage?"
-      ],
-      sleepy: [
-        "Sleep early tonight 😴",
-        "Snuggle up and rest, love 💫",
-        "You deserve deep, peaceful sleep."
-      ]
-    };
-
-    // Show surprise messages
-    const surpriseMessages = [
-      "I kiss your cheeks 100 times each night.",
-      "You're carrying our baby like a queen 👑",
-      "Let’s dance again like we did in UAE 💃",
-      "You make everything beautiful.",
-      "Even on hard days, you're my sunshine ☀️",
-      "I'd choose you in every lifetime.",
-      "Theodore and I miss you so much 💌"
-    ];
-
-    // LMP and due date setup
+    // Pregnancy tracker code (unchanged)
     const LMP_DATE = new Date("2025-03-14T00:00:00");
     const DUE_DATE = new Date(LMP_DATE.getTime() + 280 * 24 * 60 * 60 * 1000);
+
     const WEEKLY_FACTS = {
       12: [
         "🍑 Baby is the size of a peach!",
@@ -217,7 +190,6 @@
       ]
     };
 
-    // Pregnancy update function
     function updatePregnancy() {
       const now = new Date();
       const days = Math.floor((now - LMP_DATE) / (1000 * 60 * 60 * 24));
@@ -233,161 +205,181 @@
       `;
     }
 
-    // Add baby name to shared list in Firebase
-    async function addBabyName() {
-      const name = document.getElementById('name-input').value.trim();
-      if (!name) return;
-      try {
-        await addDoc(collection(db, "babyNames"), {
-          name: name,
-          date: Date.now()
-        });
-        document.getElementById('name-input').value = '';
-      } catch (e) {
-        console.error("Error adding baby name: ", e);
-      }
-    }
+    // Surprise messages code
+    const surpriseMessages = [
+      "I kiss your cheeks 100 times each night.",
+      "You're carrying our baby like a queen 👑",
+      "Let’s dance again like we did in UAE 💃",
+      "You make everything beautiful.",
+      "Even on hard days, you're my sunshine ☀️",
+      "I'd choose you in every lifetime.",
+      "Theodore and I miss you so much 💌"
+    ];
 
-    // Render baby names from Firebase
-    function renderBabyNames(snapshot) {
-      const names = [];
-      snapshot.forEach(doc => names.push({ id: doc.id, ...doc.data() }));
-      const list = document.getElementById('baby-names-list');
-      if (!names.length) {
-        list.innerHTML = "<p>No names yet.</p>";
-        return;
-      }
-      list.innerHTML = '<ul>' +
-        names.map(n => `<li>${n.name} <button onclick="deleteBabyName('${n.id}')">Delete</button></li>`).join('') +
-        '</ul>';
-    }
-
-    // Delete baby name
-    async function deleteBabyName(id) {
-      try {
-        await deleteDoc(doc(db, "babyNames", id));
-      } catch(e) {
-        console.error("Error deleting baby name: ", e);
-      }
-    }
-
-    // Save note, prune if more than 6
-    async function saveNote() {
-      const note = document.getElementById('note-input').value.trim();
-      if (!note) return;
-      try {
-        await addDoc(collection(db, "notes"), {
-          text: note,
-          date: Date.now()
-        });
-        document.getElementById('note-input').value = '';
-        pruneCollection("notes", 6);
-      } catch (e) {
-        console.error("Error saving note: ", e);
-      }
-    }
-
-    // Render notes
-    function renderNotes(snapshot) {
-      const notes = [];
-      snapshot.forEach(doc => notes.push({ id: doc.id, ...doc.data() }));
-      const list = document.getElementById('note-list');
-      if (!notes.length) {
-        list.innerHTML = "<p>No notes yet.</p>";
-        return;
-      }
-      list.innerHTML = '<ul>' +
-        notes.map(n => `<li><strong>${new Date(n.date).toLocaleString()}:</strong> ${n.text} <button onclick="deleteNote('${n.id}')">Delete</button></li>`).join('') +
-        '</ul>';
-    }
-
-    // Delete note
-    async function deleteNote(id) {
-      try {
-        await deleteDoc(doc(db, "notes", id));
-      } catch(e) {
-        console.error("Error deleting note: ", e);
-      }
-    }
-
-    // Log mood with pruning after 6 entries
-    async function logMood(mood) {
-      const msg = moodMessages[mood][Math.floor(Math.random() * moodMessages[mood].length)];
-      document.getElementById('mood-response').textContent = msg;
-      try {
-        await addDoc(collection(db, "moods"), {
-          mood: mood,
-          message: msg,
-          date: Date.now()
-        });
-        pruneCollection("moods", 6);
-      } catch (e) {
-        console.error("Error logging mood: ", e);
-      }
-    }
-
-    // Render moods
-    function renderMoods(snapshot) {
-      const moods = [];
-      snapshot.forEach(doc => moods.push({ id: doc.id, ...doc.data() }));
-      const list = document.getElementById('mood-list');
-      if (!moods.length) {
-        list.innerHTML = "<p>No mood logs yet.</p>";
-        return;
-      }
-      list.innerHTML = '<ul>' +
-        moods.map(m => `<li><strong>${new Date(m.date).toLocaleString()}:</strong> ${m.mood} — ${m.message} <button onclick="deleteMood('${m.id}')">Delete</button></li>`).join('') +
-        '</ul>';
-    }
-
-    // Delete mood entry
-    async function deleteMood(id) {
-      try {
-        await deleteDoc(doc(db, "moods", id));
-      } catch(e) {
-        console.error("Error deleting mood: ", e);
-      }
-    }
-
-    // Prune collection to max documents by deleting oldest
-    async function pruneCollection(collectionName, max) {
-      const q = query(collection(db, collectionName), orderBy("date"), limit(100));
-      const snapshot = await getDocs(q);
-      const docs = snapshot.docs;
-      const toDeleteCount = docs.length - max;
-      if (toDeleteCount > 0) {
-        for (let i = 0; i < toDeleteCount; i++) {
-          await deleteDoc(docs[i].ref);
-        }
-      }
-    }
-
-    // Surprise message with confetti
     function showMessage() {
       const msg = surpriseMessages[Math.floor(Math.random() * surpriseMessages.length)];
       document.getElementById('output').textContent = msg;
       confetti({ particleCount: 100, spread: 70 });
     }
 
-    // Listen for real-time updates for notes, moods, baby names
-    function setupRealtimeListeners() {
-      const notesQuery = query(collection(db, "notes"), orderBy("date", "desc"), limit(6));
-      onSnapshot(notesQuery, renderNotes);
+    // Baby Names (Shared on Firebase)
+    const babyNamesCol = collection(db, "babyNames");
 
-      const moodsQuery = query(collection(db, "moods"), orderBy("date", "desc"), limit(6));
-      onSnapshot(moodsQuery, renderMoods);
-
-      const namesQuery = query(collection(db, "babyNames"), orderBy("date", "desc"));
-      onSnapshot(namesQuery, renderBabyNames);
+    async function addBabyName() {
+      const name = document.getElementById('name-input').value.trim();
+      if (!name) return;
+      await addDoc(babyNamesCol, { name });
+      document.getElementById('name-input').value = '';
     }
+
+    function renderNames(names) {
+      const list = document.getElementById('baby-names-list');
+      if (names.length === 0) {
+        list.innerHTML = "<p>No names yet.</p>";
+        return;
+      }
+      list.innerHTML = '<ul>' +
+        names.map(({id, name}) => 
+          `<li>${name} <button onclick="deleteBabyName('${id}')">Delete</button></li>`
+        ).join('') +
+        '</ul>';
+    }
+
+    async function deleteBabyName(id) {
+      await deleteDoc(doc(db, "babyNames", id));
+    }
+
+    // Notes (Shared on Firebase, max 6, auto delete earliest)
+    const notesCol = collection(db, "notes");
+
+    async function saveNote() {
+      const note = document.getElementById('note-input').value.trim();
+      if (!note) return;
+
+      // Add new note
+      await addDoc(notesCol, { text: note, date: new Date().toISOString() });
+      document.getElementById('note-input').value = '';
+
+      // Check count and delete oldest if more than 6
+      const q = query(notesCol, orderBy("date", "asc"));
+      const notesSnapshot = await getDocs(q);
+      if (notesSnapshot.size > 6) {
+        const oldestDoc = notesSnapshot.docs[0];
+        await deleteDoc(oldestDoc.ref);
+      }
+    }
+
+    function renderNotes(notes) {
+      const list = document.getElementById('note-list');
+      if (notes.length === 0) {
+        list.innerHTML = "<p>No notes yet.</p>";
+        return;
+      }
+      list.innerHTML = '<ul>' +
+        notes.map(({id, text, date}) =>
+          `<li><strong>${new Date(date).toLocaleDateString()}:</strong> ${text} <button onclick="deleteNote('${id}')">Delete</button></li>`
+        ).join('') +
+        '</ul>';
+    }
+
+    async function deleteNote(id) {
+      await deleteDoc(doc(db, "notes", id));
+    }
+
+    // Moods (Shared on Firebase, max 6, auto delete earliest)
+    const moodsCol = collection(db, "moods");
+
+    const moodMessages = {
+      happy: [
+        "Your joy lights up the world! 🌞",
+        "You're glowing, my angel ✨",
+        "That smile is everything!"
+      ],
+      relaxed: [
+        "Peace looks good on you 🌿",
+        "Breathe deep, you're doing great 🧘",
+        "Enjoy the calm—I'll handle the rest."
+      ],
+      tired: [
+        "Rest, mama bear 🐻",
+        "You’re growing life—take it slow 💖",
+        "Let me spoil you today.",
+        "Do you want massage?"
+      ],
+      sleepy: [
+        "Sleep early tonight 😴",
+        "Snuggle up and rest, love 💫",
+        "You deserve deep, peaceful sleep."
+      ]
+    };
+
+    async function logMood(mood) {
+      // Add new mood to firestore with timestamp
+      await addDoc(moodsCol, {
+        mood,
+        date: new Date().toISOString()
+      });
+
+      // Check count and delete oldest if more than 6
+      const q = query(moodsCol, orderBy("date", "asc"));
+      const moodSnapshot = await getDocs(q);
+      if (moodSnapshot.size > 6) {
+        const oldestDoc = moodSnapshot.docs[0];
+        await deleteDoc(oldestDoc.ref);
+      }
+    }
+
+    function renderMoods(moods) {
+      if (moods.length === 0) {
+        document.getElementById('mood-response').textContent = "No moods logged yet.";
+        return;
+      }
+      // Show the last mood's message randomly
+      const lastMood = moods[moods.length - 1].mood;
+      const msgArray = moodMessages[lastMood] || ["Feeling undefined!"];
+      const msg = msgArray[Math.floor(Math.random() * msgArray.length)];
+      document.getElementById('mood-response').textContent = msg;
+    }
+
+    // Listen for realtime updates to babyNames
+    onSnapshot(babyNamesCol, (snapshot) => {
+      const names = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      renderNames(names);
+    });
+
+    // Listen for realtime updates to notes
+    onSnapshot(notesCol, (snapshot) => {
+      const notes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      // Sort ascending by date just in case
+      notes.sort((a, b) => new Date(a.date) - new Date(b.date));
+      renderNotes(notes);
+    });
+
+    // Listen for realtime updates to moods
+    onSnapshot(moodsCol, (snapshot) => {
+      const moods = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      moods.sort((a, b) => new Date(a.date) - new Date(b.date));
+      renderMoods(moods);
+    });
 
     window.onload = () => {
       updatePregnancy();
-      setupRealtimeListeners();
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js');
       }
     };
+
+    // Expose functions globally for inline onclick to work
+    window.addBabyName = addBabyName;
+    window.deleteBabyName = deleteBabyName;
+    window.saveNote = saveNote;
+    window.deleteNote = deleteNote;
+    window.logMood = logMood;
+    window.showMessage = showMessage;
+
   </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
 </body>
 </html>
