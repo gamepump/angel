@@ -4,93 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Angelina's Love Sanctuary 💗</title>
-  <meta name="theme-color" content="#ff8fab" />
-  <link rel="manifest" href="manifest.json" />
-  <style>
-    /* Your same CSS from before here (not repeated for brevity) */
-  </style>
-</head>
-<body>
-  <h1>💌 Angelina’s Love Sanctuary</h1>
-
-  <!-- Love Notes -->
-  <section>
-    <h2>💖 Love Notes</h2>
-    <textarea id="note-input" placeholder="Write something sweet..." rows="4"></textarea>
-    <div class="btns">
-      <button onclick="saveNote()">Save Note</button>
-    </div>
-    <div id="note-list"></div>
-  </section>
-
-  <!-- Firebase Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
-
-  <script>
-    // 🔥 Replace this config with your actual one from Firebase Console
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "angelinalovehuss.firebaseapp.com",
-      projectId: "angelinalovehuss",
-      storageBucket: "angelinalovehuss.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
-
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const auth = firebase.auth();
-
-    // Sign in anonymously
-    auth.signInAnonymously().catch(err => console.error(err));
-
-    // Save Note
-    function saveNote() {
-      const note = document.getElementById('note-input').value.trim();
-      if (!note) return;
-      db.collection("notes").add({
-        text: note,
-        date: new Date().toLocaleString()
-      }).then(() => {
-        document.getElementById('note-input').value = '';
-      });
-    }
-
-    // Render Notes Live
-    function renderNotes() {
-      db.collection("notes").orderBy("date", "desc").onSnapshot(snapshot => {
-        const list = document.getElementById('note-list');
-        if (snapshot.empty) {
-          list.innerHTML = "<p>No notes yet.</p>";
-          return;
-        }
-        let html = "<ul>";
-        snapshot.forEach(doc => {
-          const note = doc.data();
-          html += `<li><strong>${note.date}:</strong> ${note.text}</li>`;
-        });
-        html += "</ul>";
-        list.innerHTML = html;
-      });
-    }
-
-    window.onload = renderNotes;
-  </script>
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Angelina's Love Sanctuary 💗</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#ff8fab" />
   <style>
+    /* Same CSS as before, unchanged */
     body {
       font-family: Arial, sans-serif;
       background: #ffd6e0;
@@ -166,6 +83,11 @@
       padding: 4px 8px;
     }
   </style>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 </head>
 <body>
   <h1>💌 Angelina’s Love Sanctuary</h1>
@@ -219,28 +141,26 @@
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDWIloLcFrlLTkNBDn0XZsOhpdyATjGDGo",
+      authDomain: "angelinalovehuss.firebaseapp.com",
+      projectId: "angelinalovehuss",
+      storageBucket: "angelinalovehuss.firebasestorage.app",
+      messagingSenderId: "776961218617",
+      appId: "1:776961218617:web:33cdb0340f4c72e61ad5e8"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    firebase.auth().signInAnonymously();
+
     const LMP_DATE = new Date("2025-03-14T00:00:00");
     const DUE_DATE = new Date(LMP_DATE.getTime() + 280 * 24 * 60 * 60 * 1000);
 
     const WEEKLY_FACTS = {
-      12: [
-        "🍑 Baby is the size of a peach!",
-        "👂 They can hear your voice.",
-        "🦴 Bones are getting stronger.",
-        "💓 Heart beats around 160 bpm."
-      ],
-      13: [
-        "🧠 Baby's brain is developing rapidly!",
-        "🎭 Facial muscles allow for expressions.",
-        "🖐️ Fingers have fingerprints!",
-        "🕺 They might be dancing in there!"
-      ],
-      14: [
-        "🍋 Baby is the size of a lemon!",
-        "👁️ Can now squint, frown, and grimace.",
-        "💪 Muscles growing stronger.",
-        "🍼 You may feel better this trimester!"
-      ]
+      12: ["🍑 Baby is the size of a peach!", "👂 They can hear your voice.", "🦴 Bones are getting stronger.", "💓 Heart beats around 160 bpm."],
+      13: ["🧠 Baby's brain is developing rapidly!", "🎭 Facial muscles allow for expressions.", "🖐️ Fingers have fingerprints!", "🕺 They might be dancing in there!"],
+      14: ["🍋 Baby is the size of a lemon!", "👁️ Can now squint, frown, and grimace.", "💪 Muscles growing stronger.", "🍼 You may feel better this trimester!"]
     };
 
     function updatePregnancy() {
@@ -248,9 +168,7 @@
       const days = Math.floor((now - LMP_DATE) / (1000 * 60 * 60 * 24));
       const weeks = Math.floor(days / 7);
       const remainder = days % 7;
-
-      let factList = WEEKLY_FACTS[weeks] || ["No specific facts for this week yet."];
-
+      const factList = WEEKLY_FACTS[weeks] || ["No specific facts for this week yet."];
       document.getElementById('pregnancy-info').innerHTML = `
         <p>📅 Due Date: <strong>${DUE_DATE.toDateString()}</strong></p>
         <p>⏳ You are <strong>${weeks} weeks and ${remainder} days</strong> pregnant.</p>
@@ -259,46 +177,33 @@
     }
 
     const moodMessages = {
-      happy: [
-        "Your joy lights up the world! 🌞",
-        "You're glowing, my angel ✨",
-        "That smile is everything!"
-      ],
-      relaxed: [
-        "Peace looks good on you 🌿",
-        "Breathe deep, you're doing great 🧘",
-        "Enjoy the calm—I'll handle the rest."
-      ],
-      tired: [
-        "Rest, mama bear 🐻",
-        "You’re growing life—take it slow 💖",
-        "Let me spoil you today.",
-        "Do you want massage?"
-      ],
-      sleepy: [
-        "Sleep early tonight 😴",
-        "Snuggle up and rest, love 💫",
-        "You deserve deep, peaceful sleep."
-      ]
+      happy: ["Your joy lights up the world! 🌞", "You're glowing, my angel ✨", "That smile is everything!"],
+      relaxed: ["Peace looks good on you 🌿", "Breathe deep, you're doing great 🧘", "Enjoy the calm—I'll handle the rest."],
+      tired: ["Rest, mama bear 🐻", "You’re growing life—take it slow 💖", "Let me spoil you today.", "Do you want massage?"],
+      sleepy: ["Sleep early tonight 😴", "Snuggle up and rest, love 💫", "You deserve deep, peaceful sleep."]
     };
 
     function logMood(mood) {
       const msg = moodMessages[mood];
-      document.getElementById('mood-response').textContent =
-        msg[Math.floor(Math.random() * msg.length)];
+      const message = msg[Math.floor(Math.random() * msg.length)];
+      document.getElementById('mood-response').textContent = message;
+      db.collection("moods").add({
+        mood,
+        message,
+        date: new Date().toISOString()
+      });
     }
 
-    const surpriseMessages = [
-      "I kiss your cheeks 100 times each night.",
-      "You're carrying our baby like a queen 👑",
-      "Let’s dance again like we did in UAE 💃",
-      "You make everything beautiful.",
-      "Even on hard days, you're my sunshine ☀️",
-      "I'd choose you in every lifetime.",
-      "Theodore and I miss you so much 💌"
-    ];
-
     function showMessage() {
+      const surpriseMessages = [
+        "I kiss your cheeks 100 times each night.",
+        "You're carrying our baby like a queen 👑",
+        "Let’s dance again like we did in UAE 💃",
+        "You make everything beautiful.",
+        "Even on hard days, you're my sunshine ☀️",
+        "I'd choose you in every lifetime.",
+        "Theodore and I miss you so much 💌"
+      ];
       const msg = surpriseMessages[Math.floor(Math.random() * surpriseMessages.length)];
       document.getElementById('output').textContent = msg;
       confetti({ particleCount: 100, spread: 70 });
@@ -307,59 +212,58 @@
     function saveNote() {
       const note = document.getElementById('note-input').value.trim();
       if (!note) return;
-      const notes = JSON.parse(localStorage.getItem('notes') || '[]');
-      notes.push({ text: note, date: new Date().toLocaleDateString() });
-      localStorage.setItem('notes', JSON.stringify(notes));
-      document.getElementById('note-input').value = '';
-      renderNotes();
+      db.collection("notes").add({
+        text: note,
+        date: new Date().toISOString()
+      }).then(() => {
+        document.getElementById('note-input').value = '';
+      });
     }
 
     function renderNotes() {
-      const notes = JSON.parse(localStorage.getItem('notes') || '[]');
       const list = document.getElementById('note-list');
-      if (!notes.length) {
-        list.innerHTML = "<p>No notes yet.</p>";
-        return;
-      }
-      list.innerHTML = '<ul>' +
-        notes.map((n, i) => `<li><strong>${n.date}:</strong> ${n.text} <button onclick="deleteNote(${i})">Delete</button></li>`).join('') +
-        '</ul>';
+      db.collection("notes").orderBy("date", "desc").onSnapshot(snapshot => {
+        let html = "<ul>";
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const date = new Date(data.date).toLocaleDateString();
+          html += `<li><strong>${date}:</strong> ${data.text} <button onclick="deleteNote('${doc.id}')">Delete</button></li>`;
+        });
+        html += "</ul>";
+        list.innerHTML = html;
+      });
     }
 
-    function deleteNote(index) {
-      const notes = JSON.parse(localStorage.getItem('notes') || '[]');
-      notes.splice(index, 1);
-      localStorage.setItem('notes', JSON.stringify(notes));
-      renderNotes();
+    function deleteNote(id) {
+      db.collection("notes").doc(id).delete();
     }
 
     function addBabyName() {
       const name = document.getElementById('name-input').value.trim();
       if (!name) return;
-      const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
-      names.push(name);
-      localStorage.setItem('babyNames', JSON.stringify(names));
-      document.getElementById('name-input').value = '';
-      renderNames();
+      db.collection("babyNames").add({
+        name,
+        date: new Date().toISOString()
+      }).then(() => {
+        document.getElementById('name-input').value = '';
+      });
     }
 
     function renderNames() {
-      const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
       const list = document.getElementById('baby-names-list');
-      if (!names.length) {
-        list.innerHTML = "<p>No names yet.</p>";
-        return;
-      }
-      list.innerHTML = '<ul>' +
-        names.map((n, i) => `<li>${n} <button onclick="deleteName(${i})">Delete</button></li>`).join('') +
-        '</ul>';
+      db.collection("babyNames").orderBy("date", "desc").onSnapshot(snapshot => {
+        let html = "<ul>";
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          html += `<li>${data.name} <button onclick="deleteName('${doc.id}')">Delete</button></li>`;
+        });
+        html += "</ul>";
+        list.innerHTML = html;
+      });
     }
 
-    function deleteName(index) {
-      const names = JSON.parse(localStorage.getItem('babyNames') || '[]');
-      names.splice(index, 1);
-      localStorage.setItem('babyNames', JSON.stringify(names));
-      renderNames();
+    function deleteName(id) {
+      db.collection("babyNames").doc(id).delete();
     }
 
     window.onload = () => {
